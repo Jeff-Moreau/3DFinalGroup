@@ -4,5 +4,5 @@ using UnityEngine;
 public class Actions : MonoBehaviour
 {
     public static Action<RaycastHit> UnitMove;
-    public static Action UnitSelected;
+    public static Action DeSelect;
 }

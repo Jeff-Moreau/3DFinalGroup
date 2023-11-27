@@ -6,12 +6,13 @@ public class TestUnit : UnitController
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
 
-    private mState mCurrentState;
+    // LOCAL VARIABLES
     private Vector3 mCurrentPosition;
     private Quaternion mCurrentRotation;
-    private void OnEnable()
+
+    private void Awake()
     {
-        Actions.UnitMove += MoveToLocation;
+        mNavAgent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
@@ -21,9 +22,10 @@ public class TestUnit : UnitController
 
     private void InitializeVariables()
     {
-        mNavAgent = GetComponent<NavMeshAgent>();
+        mMask = LayerMask.GetMask("Units");
+        mNavAgent.speed = mData.GetMovementSpeed;
         mSelected = false;
-        mCurrentState = mState.Idle;
+        mCurrentState = State.Idle;
         mCurrentPosition = transform.position;
         mCurrentRotation = transform.rotation;
     }
@@ -32,16 +34,16 @@ public class TestUnit : UnitController
     {
         switch (mCurrentState)
         {
-            case mState.Idle:
+            case State.Idle:
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
-                transform.position = mCurrentPosition;
+                transform.position = new Vector3(mCurrentPosition.x, transform.position.y, mCurrentPosition.z);
                 transform.rotation = mCurrentRotation;
                 Debug.Log("I am Idle. Please do something with me."); // this is just for testing purposes
                 break;
 
-            case mState.Moving:
+            case State.Moving:
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
@@ -50,39 +52,39 @@ public class TestUnit : UnitController
                     mCurrentPosition = transform.position;
                     mCurrentRotation = transform.rotation;
                     mNavAgent.isStopped = true;
-                    mCurrentState = mState.Idle;
+                    mCurrentState = State.Idle;
                 }
                 Debug.Log("I am Runnin."); // this is just for testing purposes
                 break;
 
-            case mState.Working:
+            case State.Working:
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
                 Debug.Log("Work work work all day long."); // this is just for testing purposes
                 break;
 
-            case mState.Chasing:
+            case State.Chasing:
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
                 Debug.Log("I'm gonna get him."); // this is just for testing purposes
                 break;
 
-            case mState.Fleeing:
+            case State.Fleeing:
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
                 Debug.Log("He's scary im leaving."); // this is just for testing purposes
                 break;
 
-            case mState.Attacking:
+            case State.Attacking:
                 // idle animation?
                 // idle sound effects?
                 Debug.Log("Kill kill kill"); // this is just for testing purposes
                 break;
 
-            case mState.Dead:
+            case State.Dead:
                 // idle animation?
                 // idle sound effects?
                 Debug.Log("Ohh well maybe next time"); // this is just for testing purposes
@@ -93,35 +95,13 @@ public class TestUnit : UnitController
         {
             // What happens when selected??
             // Sound? Image change? Menu Pop Up?
-            Actions.UnitSelected?.Invoke();
             mRenderer.material.color = Color.green; // this is just for testing purposes
         }
         else
         {
             // What happens when unselecting??
             // Sound? Image change? Menu Pop Up?
-            mRenderer.material.color = Color.white; // this is just for testing purposes
+            mRenderer.material.color = Color.blue; // this is just for testing purposes
         }
-    }
-
-    private void MoveToLocation(RaycastHit hit)
-    {
-        if (mSelected)
-        {
-            mNavAgent.SetDestination(hit.point);
-            mNavAgent.isStopped = false;
-            mCurrentState = mState.Moving;
-        }
-    }
-
-    private void OnMouseDown()
-    {
-        mSelected = !mSelected;
-        Debug.Log(mData.GetName + " Was clicked on!"); // testing purposes
-    }
-
-    private void OnDisable()
-    {
-        Actions.UnitMove -= MoveToLocation;
     }
 }
