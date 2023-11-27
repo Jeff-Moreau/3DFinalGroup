@@ -666,7 +666,7 @@ GameObject:
   - component: {fileID: 1689016217}
   - component: {fileID: 1689016216}
   - component: {fileID: 1689016220}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TestPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -773,6 +773,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed40344174ac59d46a33fa5dca1978db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mGround:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1802144694
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,7 +786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1802144695}
   - component: {fileID: 1802144696}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NavMesh Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}

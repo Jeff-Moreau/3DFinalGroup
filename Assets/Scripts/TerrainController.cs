@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class TerrainController : MonoBehaviour
 {
+    // INSPECTOR VARIABLES
+    [SerializeField] private LayerMask mGround;
+
+    // LOCAL VARIABLES
     private bool mAreUnitsSelected;
 
     private void OnEnable()
@@ -30,7 +34,7 @@ public class TerrainController : MonoBehaviour
         {
             Ray targetLocation = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(targetLocation, out hit))
+            if (Physics.Raycast(targetLocation, out hit, 100, mGround))
             {
                 Actions.UnitMove?.Invoke(hit);
             }

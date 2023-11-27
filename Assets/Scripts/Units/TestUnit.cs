@@ -7,7 +7,8 @@ public class TestUnit : UnitController
     [SerializeField] private UnitData mData;
 
     private mState mCurrentState;
-
+    private Vector3 mCurrentPosition;
+    private Quaternion mCurrentRotation;
     private void OnEnable()
     {
         Actions.UnitMove += MoveToLocation;
@@ -23,6 +24,8 @@ public class TestUnit : UnitController
         mNavAgent = GetComponent<NavMeshAgent>();
         mSelected = false;
         mCurrentState = mState.Idle;
+        mCurrentPosition = transform.position;
+        mCurrentRotation = transform.rotation;
     }
 
     private void Update()
@@ -33,6 +36,8 @@ public class TestUnit : UnitController
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
+                transform.position = mCurrentPosition;
+                transform.rotation = mCurrentRotation;
                 Debug.Log("I am Idle. Please do something with me."); // this is just for testing purposes
                 break;
 
@@ -40,6 +45,13 @@ public class TestUnit : UnitController
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
+                if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 1.5f)
+                {
+                    mCurrentPosition = transform.position;
+                    mCurrentRotation = transform.rotation;
+                    mNavAgent.isStopped = true;
+                    mCurrentState = mState.Idle;
+                }
                 Debug.Log("I am Runnin."); // this is just for testing purposes
                 break;
 
@@ -97,6 +109,7 @@ public class TestUnit : UnitController
         if (mSelected)
         {
             mNavAgent.SetDestination(hit.point);
+            mNavAgent.isStopped = false;
             mCurrentState = mState.Moving;
         }
     }
