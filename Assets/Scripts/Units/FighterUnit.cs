@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class TestUnit : UnitController
+public class FighterUnit : UnitController, ISelectable
 {
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
@@ -98,6 +98,22 @@ public class TestUnit : UnitController
             // What happens when unselecting??
             // Sound? Image change? Menu Pop Up?
             mRenderer.material.color = Color.blue; // this is just for testing purposes
+        }
+    }
+
+    public void Selected()
+    {
+        if (mSelected && Input.GetKey(KeyCode.LeftShift))
+        {
+            var otherUnits = FindObjectsOfType<FighterUnit>();
+            foreach (var otherUnit in otherUnits)
+            {
+                otherUnit.mSelected = true;
+            }
+        }
+        else
+        {
+            mSelected = !mSelected;
         }
     }
 }

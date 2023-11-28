@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitController : MonoBehaviour, ISelectable, IHighlightable
+public class UnitController : MonoBehaviour, IHighlightable
 {
     // ENUMS FOR STATE MACHINE
     protected enum State
@@ -37,22 +37,6 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
     {
         Actions.DeSelect += DeSelectUnit;
         Actions.UnitMove += MoveUnit;
-    }
-
-    public void Selected()
-    {
-        if (mSelected && Input.GetKey(KeyCode.LeftShift))
-        {
-            var otherUnits = FindObjectsOfType<TestUnit>();
-            foreach (var otherUnit in otherUnits)
-            {
-                otherUnit.mSelected = true;
-            }
-        }
-        else
-        {
-            mSelected = !mSelected;
-        }
     }
 
     protected void DeSelectUnit()

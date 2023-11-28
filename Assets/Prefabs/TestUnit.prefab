@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 4155674079465307822}
   - component: {fileID: 8332902469706926632}
   - component: {fileID: 6938418540664816335}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: TestUnit
-  m_TagString: Unit
+  m_TagString: Gatherer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
