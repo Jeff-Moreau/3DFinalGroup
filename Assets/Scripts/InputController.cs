@@ -40,7 +40,7 @@ public class InputController : MonoBehaviour
 
             if (Physics.Raycast(location, out RaycastHit hit))
             {
-                hit.collider.gameObject.TryGetComponent<ISelectable>(out ISelectable item);
+                hit.collider.gameObject.TryGetComponent(out ISelectable item);
                 item?.Selected();
 
                 if (hit.collider.gameObject.layer == 3)
@@ -70,7 +70,7 @@ public class InputController : MonoBehaviour
 
         if (Physics.Raycast(hoverMouse, out RaycastHit target))
         {
-            target.collider.gameObject.TryGetComponent<IHighlightable>(out IHighlightable item);
+            target.collider.gameObject.TryGetComponent(out IHighlightable item);
             item?.MouseHover();
         }
     }
