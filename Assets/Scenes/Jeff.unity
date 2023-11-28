@@ -673,6 +673,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   mMainCamera: {fileID: 1580577454}
+  mCameraData: {fileID: 11400000, guid: daff3b197b6a7e64faa5e74e589d70e6, type: 2}
 --- !u!4 &779744793
 Transform:
   m_ObjectHideFlags: 0

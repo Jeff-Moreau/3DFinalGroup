@@ -5,7 +5,10 @@ public class InputController : MonoBehaviour
     // INSPECTOR VARIABLES
     [SerializeField] private LayerMask mGround;
     [SerializeField] private LayerMask mUnit;
+
+    [Header("Camera Stuff")]
     [SerializeField] private Camera mMainCamera;
+    [SerializeField] private CameraData mCameraData;
 
     private Vector3 mCameraPosition;
 
@@ -72,15 +75,15 @@ public class InputController : MonoBehaviour
 
     private void CameraZoom()
     {
-        if (Input.mouseScrollDelta.y < 0 && mMainCamera.transform.position.y < 30)
+        if (Input.mouseScrollDelta.y < 0 && mMainCamera.transform.position.y < mCameraData.GetMaxZoomDistance)
         {
             Debug.Log("Scroll Plus");
-            mCameraPosition.y += 1;
+            mCameraPosition.y += mCameraData.GetZoomSpeed;
         }
-        else if (Input.mouseScrollDelta.y > 0 && mMainCamera.transform.position.y > 10)
+        else if (Input.mouseScrollDelta.y > 0 && mMainCamera.transform.position.y > mCameraData.GetMinZoomDistance)
         {
             Debug.Log("Scroll Minus");
-            mCameraPosition.y -= 1;
+            mCameraPosition.y -= mCameraData.GetZoomSpeed;
         }
 
         mMainCamera.transform.position = mCameraPosition;
