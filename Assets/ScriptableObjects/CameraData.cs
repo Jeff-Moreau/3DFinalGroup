@@ -8,13 +8,17 @@ public class CameraData : ScriptableObject
     [SerializeField, Range(10, 50)] private float mMaxZoomDistance;
     [SerializeField, Range(10, 50)] private float mMinZoomDistance;
     [SerializeField, Range(0.1f, 10)] private float mZoomSpeed;
-    [SerializeField] private float mEdgeBuffer;
+    [SerializeField] private float mLeftRighEdgeBuffer;
+    [SerializeField] private float mTopEdgeBuffer;
+    [SerializeField] private float mBottomEdgeBuffer;
     [SerializeField] private float mEdgeScrollSpeed;
 
     // GETTERS
     public float GetMaxZoomDistance => mMaxZoomDistance;
     public float GetMinZoomDistance => mMinZoomDistance;
     public float GetZoomSpeed => mZoomSpeed;
-    public float GetEdgeBuffer => mEdgeBuffer;
+    public float GetLeftRightEdgeBuffer => mLeftRighEdgeBuffer;
+    public float GetBottomEdgeBuffer => mBottomEdgeBuffer;
+    public float GetTopEdgeBuffer => mTopEdgeBuffer;
     public float GetEdgeScrollSpeed => mEdgeScrollSpeed;
 }

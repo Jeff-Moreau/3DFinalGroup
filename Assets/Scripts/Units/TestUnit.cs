@@ -6,10 +6,6 @@ public class TestUnit : UnitController
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
 
-    // LOCAL VARIABLES
-    private Vector3 mCurrentPosition;
-    private Quaternion mCurrentRotation;
-
     private void Awake()
     {
         mNavAgent = GetComponent<NavMeshAgent>();

@@ -1,7 +1,25 @@
 using UnityEngine;
 
-public class InputController : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
+    // SINGLETON STARTS
+    private static InputManager myInstance;
+    private void Singleton()
+    {
+        if (myInstance != null && myInstance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            myInstance = this;
+        }
+    }
+
+    public static InputManager Load => myInstance;
+    // SINGLETON ENDS
+
     // INSPECTOR VARIABLES
     [SerializeField] private LayerMask mGround;
     [SerializeField] private LayerMask mUnit;
@@ -11,6 +29,11 @@ public class InputController : MonoBehaviour
     [SerializeField] private CameraData mCameraData;
 
     private Vector3 mCameraPosition;
+
+    private void Awake()
+    {
+        Singleton();
+    }
 
     private void Start()
     {
@@ -92,20 +115,20 @@ public class InputController : MonoBehaviour
     private void MoveCameraMouseEdge()
     {
         // Get the Camera to stop at edge of map and go no further
-        if (Input.mousePosition.x >= Screen.width - mCameraData.GetEdgeBuffer)
+        if (Input.mousePosition.x >= Screen.width - mCameraData.GetLeftRightEdgeBuffer)
         {
             mCameraPosition += Vector3.right * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
-        else if (Input.mousePosition.x <= (Screen.width / Screen.width) + mCameraData.GetEdgeBuffer)
+        else if (Input.mousePosition.x <= (Screen.width / Screen.width) + mCameraData.GetLeftRightEdgeBuffer)
         {
             mCameraPosition += -Vector3.right * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
 
-        if (Input.mousePosition.y >= Screen.height - mCameraData.GetEdgeBuffer)
+        if (Input.mousePosition.y >= Screen.height - mCameraData.GetLeftRightEdgeBuffer)
         {
             mCameraPosition += Vector3.forward * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
-        else if (Input.mousePosition.y <= (Screen.height / Screen.height) + mCameraData.GetEdgeBuffer)
+        else if (Input.mousePosition.y <= (Screen.height / Screen.height) + mCameraData.GetLeftRightEdgeBuffer)
         {
             mCameraPosition += -Vector3.forward * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }

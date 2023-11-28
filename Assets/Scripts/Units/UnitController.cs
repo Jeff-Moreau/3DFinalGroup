@@ -24,6 +24,8 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
     protected State mCurrentState;
     protected NavMeshAgent mNavAgent;
     protected LayerMask mMask;
+    protected Vector3 mCurrentPosition;
+    protected Quaternion mCurrentRotation;
 
     // GETTERS
     public bool GetSelected => mSelected;
