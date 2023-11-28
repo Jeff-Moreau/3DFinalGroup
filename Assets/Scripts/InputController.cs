@@ -91,21 +91,23 @@ public class InputController : MonoBehaviour
 
     private void MoveCameraMouseEdge()
     {
-        if (Input.mousePosition.x >= Screen.width - 100)
+        // Get the Camera to stop at edge of map and go no further
+        if (Input.mousePosition.x >= Screen.width - mCameraData.GetEdgeBuffer)
         {
-            mCameraPosition += Vector3.right * Time.deltaTime * 15;
+            mCameraPosition += Vector3.right * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
-        else if (Input.mousePosition.x <= (Screen.width / Screen.width) + 100)
+        else if (Input.mousePosition.x <= (Screen.width / Screen.width) + mCameraData.GetEdgeBuffer)
         {
-            mCameraPosition += -Vector3.right * Time.deltaTime * 15;
+            mCameraPosition += -Vector3.right * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
-        if (Input.mousePosition.y >= Screen.height - 100)
+
+        if (Input.mousePosition.y >= Screen.height - mCameraData.GetEdgeBuffer)
         {
-            mCameraPosition += Vector3.forward * Time.deltaTime * 15;
+            mCameraPosition += Vector3.forward * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
-        else if (Input.mousePosition.y <= (Screen.height / Screen.height) + 100)
+        else if (Input.mousePosition.y <= (Screen.height / Screen.height) + mCameraData.GetEdgeBuffer)
         {
-            mCameraPosition += -Vector3.forward * Time.deltaTime * 15;
+            mCameraPosition += -Vector3.forward * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
     }
 }
