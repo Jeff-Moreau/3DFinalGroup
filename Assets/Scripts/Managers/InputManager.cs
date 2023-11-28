@@ -25,10 +25,15 @@ public class InputManager : MonoBehaviour
     [SerializeField] private LayerMask mUnit;
 
     [Header("Camera Stuff")]
-    [SerializeField] private Camera mMainCamera;
+    [SerializeField] private Camera mMainCamera = null;
     [SerializeField] private CameraData mCameraData;
 
     private Vector3 mCameraPosition;
+
+    private void OnEnable()
+    {
+        Actions.CameraLoadedPosition += LoadIsDone;
+    }
 
     private void Awake()
     {
@@ -52,7 +57,9 @@ public class InputManager : MonoBehaviour
         MoveUnitToLocation();
         MouseHover();
         MoveCameraMouseEdge();
+
         mMainCamera.transform.position = mCameraPosition;
+
     }
 
     private static void SelectDeselectUnit()
@@ -132,5 +139,15 @@ public class InputManager : MonoBehaviour
         {
             mCameraPosition += -Vector3.forward * Time.deltaTime * mCameraData.GetEdgeScrollSpeed;
         }
+    }
+
+    private void LoadIsDone(Vector3 cameraPosition)
+    {
+        mCameraPosition = cameraPosition;
+    }
+
+    private void OnDisable()
+    {
+        Actions.CameraLoadedPosition -= LoadIsDone;
     }
 }
