@@ -39,7 +39,18 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
 
     public void Selected()
     {
-        mSelected = !mSelected;
+        if (mSelected)
+        {
+            var otherUnits = FindObjectsOfType<TestUnit>();
+            foreach (var otherUnit in otherUnits)
+            {
+                otherUnit.mSelected = true;
+            }
+        }
+        else
+        {
+            mSelected = true;
+        }
     }
 
     protected void DeSelectUnit()
