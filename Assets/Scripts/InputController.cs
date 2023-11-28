@@ -28,6 +28,8 @@ public class InputController : MonoBehaviour
         SelectDeselectUnit();
         MoveUnitToLocation();
         MouseHover();
+        MoveCameraMouseEdge();
+        mMainCamera.transform.position = mCameraPosition;
     }
 
     private static void SelectDeselectUnit()
@@ -85,7 +87,25 @@ public class InputController : MonoBehaviour
             Debug.Log("Scroll Minus");
             mCameraPosition.y -= mCameraData.GetZoomSpeed;
         }
+    }
 
-        mMainCamera.transform.position = mCameraPosition;
+    private void MoveCameraMouseEdge()
+    {
+        if (Input.mousePosition.x >= Screen.width - 100)
+        {
+            mCameraPosition += Vector3.right * Time.deltaTime * 15;
+        }
+        else if (Input.mousePosition.x <= (Screen.width / Screen.width) + 100)
+        {
+            mCameraPosition += -Vector3.right * Time.deltaTime * 15;
+        }
+        if (Input.mousePosition.y >= Screen.height - 100)
+        {
+            mCameraPosition += Vector3.forward * Time.deltaTime * 15;
+        }
+        else if (Input.mousePosition.y <= (Screen.height / Screen.height) + 100)
+        {
+            mCameraPosition += -Vector3.forward * Time.deltaTime * 15;
+        }
     }
 }
