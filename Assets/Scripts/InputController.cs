@@ -5,6 +5,9 @@ public class InputController : MonoBehaviour
     // INSPECTOR VARIABLES
     [SerializeField] private LayerMask mGround;
     [SerializeField] private LayerMask mUnit;
+    [SerializeField] private Camera mMainCamera;
+
+    private Vector3 mCameraPosition;
 
     private void Start()
     {
@@ -13,10 +16,18 @@ public class InputController : MonoBehaviour
 
     private void InitializeVariables()
     {
-
+        mCameraPosition = mMainCamera.transform.position;
     }
 
     private void Update()
+    {
+        CameraZoom();
+        SelectDeselectUnit();
+        MoveUnitToLocation();
+        MouseHover();
+    }
+
+    private static void SelectDeselectUnit()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -33,7 +44,10 @@ public class InputController : MonoBehaviour
                 }
             }
         }
+    }
 
+    private static void MoveUnitToLocation()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -43,7 +57,10 @@ public class InputController : MonoBehaviour
                 Actions.UnitMove.Invoke(hit);
             }
         }
+    }
 
+    private static void MouseHover()
+    {
         var hoverMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(hoverMouse, out RaycastHit target))
@@ -51,5 +68,21 @@ public class InputController : MonoBehaviour
             target.collider.gameObject.TryGetComponent<IHighlightable>(out IHighlightable item);
             item?.MouseHover();
         }
+    }
+
+    private void CameraZoom()
+    {
+        if (Input.mouseScrollDelta.y < 0 && mMainCamera.transform.position.y < 30)
+        {
+            Debug.Log("Scroll Plus");
+            mCameraPosition.y += 1;
+        }
+        else if (Input.mouseScrollDelta.y > 0 && mMainCamera.transform.position.y > 10)
+        {
+            Debug.Log("Scroll Minus");
+            mCameraPosition.y -= 1;
+        }
+
+        mMainCamera.transform.position = mCameraPosition;
     }
 }
