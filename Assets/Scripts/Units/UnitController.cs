@@ -39,7 +39,7 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
 
     public void Selected()
     {
-        if (mSelected)
+        if (mSelected && Input.GetKey(KeyCode.LeftShift))
         {
             var otherUnits = FindObjectsOfType<TestUnit>();
             foreach (var otherUnit in otherUnits)
@@ -49,7 +49,7 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
         }
         else
         {
-            mSelected = true;
+            mSelected = !mSelected;
         }
     }
 
