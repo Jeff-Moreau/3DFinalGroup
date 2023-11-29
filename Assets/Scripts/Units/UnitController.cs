@@ -20,6 +20,7 @@ public class UnitController : MonoBehaviour, IHighlightable
     [SerializeField] protected Renderer mRenderer = null;
 
     // MEMBERS VARIABLES
+    protected Animator mAnimator;
     protected bool mSelected;
     protected State mCurrentState;
     protected NavMeshAgent mNavAgent;
