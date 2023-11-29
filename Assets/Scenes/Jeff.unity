@@ -269,6 +269,7 @@ MonoBehaviour:
   mUnit:
     serializedVersion: 2
     m_Bits: 64
+  mSelectionBoxColor: {fileID: 2800000, guid: eb579126ba9c3b84fbc2c97718056e00, type: 3}
   mMainCamera: {fileID: 1739467750}
   mCameraData: {fileID: 11400000, guid: daff3b197b6a7e64faa5e74e589d70e6, type: 2}
 --- !u!1001 &316963409

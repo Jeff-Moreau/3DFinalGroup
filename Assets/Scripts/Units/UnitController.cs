@@ -19,7 +19,7 @@ public class UnitController : MonoBehaviour, IHighlightable
     [SerializeField] protected Rigidbody mRigidBody = null;
     [SerializeField] protected Renderer mRenderer = null;
 
-    // LOCAL VARIABLES
+    // MEMBERS VARIABLES
     protected bool mSelected;
     protected State mCurrentState;
     protected NavMeshAgent mNavAgent;

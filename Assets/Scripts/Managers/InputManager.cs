@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -21,14 +22,18 @@ public class InputManager : MonoBehaviour
     // SINGLETON ENDS
 
     // INSPECTOR VARIABLES
-    [SerializeField] private LayerMask mGround;
-    [SerializeField] private LayerMask mUnit;
+    [SerializeField] private LayerMask mGround = new LayerMask();
+    [SerializeField] private LayerMask mUnit = new LayerMask();
+    [SerializeField] private Texture2D mSelectionBoxColor = null;
 
     [Header("Camera Stuff")]
     [SerializeField] private Camera mMainCamera = null;
-    [SerializeField] private CameraData mCameraData;
+    [SerializeField] private CameraData mCameraData = null;
 
+    // MEMBER VARIABLES
     private Vector3 mCameraPosition;
+    private Vector3 mBoxStartCorner;
+    private Rect mUnitSelectionBox;
 
     private void OnEnable()
     {
@@ -48,6 +53,8 @@ public class InputManager : MonoBehaviour
     private void InitializeVariables()
     {
         mCameraPosition = mMainCamera.transform.position;
+        mBoxStartCorner = Vector3.zero;
+        mUnitSelectionBox = new Rect(0,0,0,0);
     }
 
     private void Update()
@@ -55,15 +62,62 @@ public class InputManager : MonoBehaviour
         CameraZoom();
         SelectDeselectUnit();
         MoveUnitToLocation();
-        MouseHover();
         MoveCameraMouseEdge();
 
         mMainCamera.transform.position = mCameraPosition;
+    }
 
+    private void LateUpdate()
+    {
+        MouseHover();
+        BoxSelectUnits();
+    }
+
+    private void OnGUI()
+    {
+        if (mBoxStartCorner != -Vector3.one)
+        {
+            GUI.DrawTexture(mUnitSelectionBox, mSelectionBoxColor);
+        }
+    }
+
+    private void BoxSelectUnits()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            mBoxStartCorner = Input.mousePosition;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            mBoxStartCorner = Vector3.one;
+        }
+
+        CreateBoxSelector();
+    }
+
+    private void CreateBoxSelector()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            mUnitSelectionBox = new Rect(mBoxStartCorner.x, Screen.height - mBoxStartCorner.y, Input.mousePosition.x - mBoxStartCorner.x, (Screen.height - Input.mousePosition.y) - (Screen.height - mBoxStartCorner.y));
+
+            if (mUnitSelectionBox.width < 0)
+            {
+                mUnitSelectionBox.x += mUnitSelectionBox.width;
+                mUnitSelectionBox.width = -mUnitSelectionBox.width;
+            }
+
+            if (mUnitSelectionBox.height < 0)
+            {
+                mUnitSelectionBox.y += mUnitSelectionBox.height;
+                mUnitSelectionBox.height = -mUnitSelectionBox.height;
+            }
+        }
     }
 
     private static void SelectDeselectUnit()
     {
+        // left mouse button to select or deselect a unit
         if (Input.GetMouseButtonDown(0))
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -83,6 +137,7 @@ public class InputManager : MonoBehaviour
 
     private static void MoveUnitToLocation()
     {
+        // right mouse button to move selected units to click location
         if (Input.GetMouseButtonDown(1))
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -96,6 +151,7 @@ public class InputManager : MonoBehaviour
 
     private static void MouseHover()
     {
+        // mouse hover over unit to light it up
         var hoverMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(hoverMouse, out RaycastHit target))
@@ -107,6 +163,7 @@ public class InputManager : MonoBehaviour
 
     private void CameraZoom()
     {
+        // mouse scroll wheel to zoom in and out
         if (Input.mouseScrollDelta.y < 0 && mMainCamera.transform.position.y < mCameraData.GetMaxZoomDistance)
         {
             Debug.Log("Scroll Plus");

@@ -10,7 +10,7 @@ public class CombatUnitPool : MonoBehaviour
     // LOCAL VARIABLES
     private int myTotalPrefabsNeeded;
 
-    // LOCAL CONTAINERS
+    // MEMBER CONTAINERS
     private List<GameObject> myPrefabList;
 
     // GETTERS

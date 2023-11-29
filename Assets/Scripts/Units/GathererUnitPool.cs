@@ -7,10 +7,10 @@ public class GathererUnitPool : MonoBehaviour
     [Header("Prefab to Pool")]
     [SerializeField] private GameObject thePrefab = null;
 
-    // LOCAL VARIABLES
+    // MEMBER VARIABLES
     private int myTotalPrefabsNeeded;
 
-    // LOCAL CONTAINERS
+    // MEMBER CONTAINERS
     private List<GameObject> myPrefabList;
 
     // GETTERS

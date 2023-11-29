@@ -26,7 +26,7 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] private GameObject mAIStartBase = null;
     [SerializeField] private Camera mMainCamera = null;
 
-    //LOCAL VARIABLES
+    //MEMBER VARIABLES
     private GameObject[] mMapSpawnPoints;
 
     private void Awake()
@@ -38,6 +38,7 @@ public class LoadingManager : MonoBehaviour
     {
         InitializeVariables();
         CreatePlayerStartLocation();
+        Actions.CameraLoadedPosition.Invoke(mMainCamera.transform.position);
     }
 
     private void CreatePlayerStartLocation()
@@ -47,13 +48,6 @@ public class LoadingManager : MonoBehaviour
         var newSpawnLocation = new Vector3(mMapSpawnPoints[randomSpawnLocation].transform.position.x, mMapSpawnPoints[randomSpawnLocation].transform.position.y, mMapSpawnPoints[randomSpawnLocation].transform.position.z);
         mMainCamera.transform.position = new Vector3(mMapSpawnPoints[randomSpawnLocation].transform.position.x, mMainCamera.transform.position.y, mMapSpawnPoints[randomSpawnLocation].transform.position.z);
         Instantiate(mPlayerStartBase, newSpawnLocation, mMapSpawnPoints[randomSpawnLocation].transform.rotation);
-        Debug.Log("Update Camera" + mMainCamera.transform.position);
-        Actions.CameraLoadedPosition.Invoke(mMainCamera.transform.position);
-    }
-
-    private void Update()
-    {
-        
     }
 
     private void InitializeVariables()
