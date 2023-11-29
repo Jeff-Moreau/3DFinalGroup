@@ -91,6 +91,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            //mBoxStartCorner = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mBoxStartCorner = Input.mousePosition;
         }
         else if (isSelectingUnits && Input.GetMouseButtonUp(0))

@@ -25,6 +25,7 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] private GameObject mPlayerStartBase = null;
     [SerializeField] private GameObject mAIStartBase = null;
     [SerializeField] private Camera mMainCamera = null;
+    [SerializeField] private FighterUnitPool mFighterUnitPool = null;
 
     //MEMBER VARIABLES
     private GameObject[] mMapSpawnPoints;
@@ -38,6 +39,7 @@ public class LoadingManager : MonoBehaviour
     {
         InitializeVariables();
         CreatePlayerStartLocation();
+        CreatePlayerStartingUnits();
         Actions.CameraLoadedPosition.Invoke(mMainCamera.transform.position);
     }
 
@@ -49,6 +51,11 @@ public class LoadingManager : MonoBehaviour
         mMainCamera.transform.position = new Vector3(mMapSpawnPoints[randomSpawnLocation].transform.position.x, mMainCamera.transform.position.y, mMapSpawnPoints[randomSpawnLocation].transform.position.z);
         mMainCamera.fieldOfView = 60;
         Instantiate(mPlayerStartBase, newSpawnLocation, mMapSpawnPoints[randomSpawnLocation].transform.rotation);
+    }
+
+    private void CreatePlayerStartingUnits()
+    {
+        
     }
 
     private void InitializeVariables()

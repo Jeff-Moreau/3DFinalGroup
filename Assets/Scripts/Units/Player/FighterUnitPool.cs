@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatUnitPool : MonoBehaviour
+public class FighterUnitPool : MonoBehaviour
 {
     // INSPECTOR VARIABLES
     [Header("Prefab to Pool")]
