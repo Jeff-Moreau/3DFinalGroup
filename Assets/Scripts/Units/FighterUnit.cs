@@ -9,6 +9,7 @@ public class FighterUnit : UnitController, ISelectable
     private void Awake()
     {
         mNavAgent = GetComponent<NavMeshAgent>();
+        mAnimator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -36,6 +37,7 @@ public class FighterUnit : UnitController, ISelectable
                 // checking range for bad guys
                 transform.position = new Vector3(mCurrentPosition.x, transform.position.y, mCurrentPosition.z);
                 transform.rotation = mCurrentRotation;
+                mAnimator.SetBool("IsWalking", false);
                 Debug.Log("I am Idle. Please do something with me."); // this is just for testing purposes
                 break;
 
@@ -50,6 +52,8 @@ public class FighterUnit : UnitController, ISelectable
                     mNavAgent.isStopped = true;
                     mCurrentState = State.Idle;
                 }
+                mAnimator.SetBool("IsWalking", true);
+                Debug.Log("my velocity" + mNavAgent.velocity.magnitude);
                 Debug.Log("I am Runnin."); // this is just for testing purposes
                 break;
 
@@ -97,7 +101,7 @@ public class FighterUnit : UnitController, ISelectable
         {
             // What happens when unselecting??
             // Sound? Image change? Menu Pop Up?
-            mRenderer.material.color = Color.blue; // this is just for testing purposes
+            mRenderer.material.color = Color.white; // this is just for testing purposes
         }
 
         base.Update();

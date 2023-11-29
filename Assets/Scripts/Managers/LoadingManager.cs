@@ -47,6 +47,7 @@ public class LoadingManager : MonoBehaviour
         Debug.Log(randomSpawnLocation);
         var newSpawnLocation = new Vector3(mMapSpawnPoints[randomSpawnLocation].transform.position.x, mMapSpawnPoints[randomSpawnLocation].transform.position.y, mMapSpawnPoints[randomSpawnLocation].transform.position.z);
         mMainCamera.transform.position = new Vector3(mMapSpawnPoints[randomSpawnLocation].transform.position.x, mMainCamera.transform.position.y, mMapSpawnPoints[randomSpawnLocation].transform.position.z);
+        mMainCamera.fieldOfView = 60;
         Instantiate(mPlayerStartBase, newSpawnLocation, mMapSpawnPoints[randomSpawnLocation].transform.rotation);
     }
 
