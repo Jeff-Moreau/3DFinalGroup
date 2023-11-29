@@ -19,7 +19,6 @@ public class FighterUnit : UnitController, ISelectable
 
     private void InitializeVariables()
     {
-        mMask = LayerMask.GetMask("Units");
         mNavAgent.speed = mData.GetMovementSpeed;
         mSelected = false;
         mCurrentState = State.Idle;
@@ -68,6 +67,8 @@ public class FighterUnit : UnitController, ISelectable
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
+                mAnimator.SetBool("IsWalking", true);
+                mAnimator.SetBool("IsShootAndWalk", true);
                 Debug.Log("I'm gonna get him."); // this is just for testing purposes
                 break;
 
@@ -75,12 +76,14 @@ public class FighterUnit : UnitController, ISelectable
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
+                mAnimator.SetBool("IsWalking", true);
                 Debug.Log("He's scary im leaving."); // this is just for testing purposes
                 break;
 
             case State.Attacking:
                 // idle animation?
                 // idle sound effects?
+                mAnimator.SetBool("IsShooting", true);
                 Debug.Log("Kill kill kill"); // this is just for testing purposes
                 break;
 
