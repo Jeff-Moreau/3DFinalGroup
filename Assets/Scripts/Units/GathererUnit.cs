@@ -27,7 +27,7 @@ public class GathererUnit : UnitController, ISelectable
         mCurrentRotation = transform.rotation;
     }
 
-    private void Update()
+    new private void Update()
     {
         switch (mCurrentState)
         {
@@ -100,6 +100,7 @@ public class GathererUnit : UnitController, ISelectable
             // Sound? Image change? Menu Pop Up?
             mRenderer.material.color = Color.blue; // this is just for testing purposes
         }
+        base.Update();
     }
 
     public void Selected()

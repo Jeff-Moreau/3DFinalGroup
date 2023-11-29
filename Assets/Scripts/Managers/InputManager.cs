@@ -34,6 +34,11 @@ public class InputManager : MonoBehaviour
     private Vector3 mCameraPosition;
     private Vector3 mBoxStartCorner;
     private Rect mUnitSelectionBox;
+    private bool isSelectingUnits;
+
+    // GETTERS
+    public Rect GetUnitSelectionBox => mUnitSelectionBox;
+    public bool IsSelecting => isSelectingUnits;
 
     private void OnEnable()
     {
@@ -55,6 +60,7 @@ public class InputManager : MonoBehaviour
         mCameraPosition = mMainCamera.transform.position;
         mBoxStartCorner = Vector3.zero;
         mUnitSelectionBox = new Rect(0,0,0,0);
+        isSelectingUnits = false;
     }
 
     private void Update()
@@ -75,7 +81,7 @@ public class InputManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (mBoxStartCorner != -Vector3.one)
+        if (mBoxStartCorner != Vector3.zero)
         {
             GUI.DrawTexture(mUnitSelectionBox, mSelectionBoxColor);
         }
@@ -87,9 +93,9 @@ public class InputManager : MonoBehaviour
         {
             mBoxStartCorner = Input.mousePosition;
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (isSelectingUnits && Input.GetMouseButtonUp(0))
         {
-            mBoxStartCorner = Vector3.one;
+            mBoxStartCorner = Vector3.zero;
         }
 
         CreateBoxSelector();
@@ -99,6 +105,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
+            isSelectingUnits = true;
             mUnitSelectionBox = new Rect(mBoxStartCorner.x, Screen.height - mBoxStartCorner.y, Input.mousePosition.x - mBoxStartCorner.x, (Screen.height - Input.mousePosition.y) - (Screen.height - mBoxStartCorner.y));
 
             if (mUnitSelectionBox.width < 0)

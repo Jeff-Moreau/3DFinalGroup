@@ -269,7 +269,7 @@ MonoBehaviour:
   mUnit:
     serializedVersion: 2
     m_Bits: 64
-  mSelectionBoxColor: {fileID: 2800000, guid: eb579126ba9c3b84fbc2c97718056e00, type: 3}
+  mSelectionBoxColor: {fileID: 2800000, guid: 41835027fc5fcd64ab982756af39ef8d, type: 3}
   mMainCamera: {fileID: 1739467750}
   mCameraData: {fileID: 11400000, guid: daff3b197b6a7e64faa5e74e589d70e6, type: 2}
 --- !u!1001 &316963409
@@ -888,13 +888,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1739467748}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 15, z: 0}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0.5, y: 14.4, z: -23.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &1971914947
 GameObject:
   m_ObjectHideFlags: 0

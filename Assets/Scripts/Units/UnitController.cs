@@ -39,6 +39,16 @@ public class UnitController : MonoBehaviour, IHighlightable
         Actions.UnitMove += MoveUnit;
     }
 
+    protected void Update()
+    {
+        if (InputManager.Load.IsSelecting)
+        {
+            var myLocationOnCamera = Camera.main.WorldToScreenPoint(transform.position);
+            myLocationOnCamera.y = Screen.height - myLocationOnCamera.y;
+            mSelected = InputManager.Load.GetUnitSelectionBox.Contains(myLocationOnCamera);
+        }
+    }
+
     protected void DeSelectUnit()
     {
         if (mSelected)
