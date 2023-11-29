@@ -15,5 +15,7 @@ MonoBehaviour:
   mMaxZoomDistance: 50
   mMinZoomDistance: 10
   mZoomSpeed: 1.9
-  mEdgeBuffer: 100
+  mLeftRighEdgeBuffer: 100
+  mTopEdgeBuffer: 100
+  mBottomEdgeBuffer: 100
   mEdgeScrollSpeed: 15

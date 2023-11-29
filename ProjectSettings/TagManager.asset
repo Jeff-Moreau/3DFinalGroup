@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Unit
   - Ground
+  - Gatherer
+  - Fighter
+  - AIGatherer
+  - AIFighter
   layers:
   - Default
   - TransparentFX
@@ -14,10 +18,10 @@ TagManager:
   - Water
   - UI
   - Units
-  - 
-  - 
-  - 
-  - 
+  - Gatherer
+  - Fighter
+  - AIGatherer
+  - AIFighter
   - 
   - 
   - 

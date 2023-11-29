@@ -1,14 +1,10 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class TestUnit : UnitController
+public class FighterUnit : UnitController, ISelectable
 {
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
-
-    // LOCAL VARIABLES
-    private Vector3 mCurrentPosition;
-    private Quaternion mCurrentRotation;
 
     private void Awake()
     {
@@ -30,7 +26,7 @@ public class TestUnit : UnitController
         mCurrentRotation = transform.rotation;
     }
 
-    private void Update()
+    new private void Update()
     {
         switch (mCurrentState)
         {
@@ -102,6 +98,24 @@ public class TestUnit : UnitController
             // What happens when unselecting??
             // Sound? Image change? Menu Pop Up?
             mRenderer.material.color = Color.blue; // this is just for testing purposes
+        }
+
+        base.Update();
+    }
+
+    public void Selected()
+    {
+        if (mSelected && Input.GetKey(KeyCode.LeftShift))
+        {
+            var otherUnits = FindObjectsOfType<FighterUnit>();
+            foreach (var otherUnit in otherUnits)
+            {
+                otherUnit.mSelected = true;
+            }
+        }
+        else
+        {
+            mSelected = !mSelected;
         }
     }
 }
