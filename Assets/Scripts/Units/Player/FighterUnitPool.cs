@@ -7,7 +7,7 @@ public class FighterUnitPool : MonoBehaviour
     [Header("Prefab to Pool")]
     [SerializeField] private GameObject thePrefab = null;
 
-    // LOCAL VARIABLES
+    // MEMBER VARIABLES
     private int myTotalPrefabsNeeded;
 
     // MEMBER CONTAINERS
@@ -40,7 +40,7 @@ public class FighterUnitPool : MonoBehaviour
         }
     }
 
-    public GameObject GetAvailableAIVehicle()
+    public GameObject GetAvailablePrefabs()
     {
         for (int i = 0; i < myTotalPrefabsNeeded; i++)
         {

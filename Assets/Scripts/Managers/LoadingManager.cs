@@ -28,7 +28,10 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] private FighterUnitPool mFighterUnitPool = null;
 
     //MEMBER VARIABLES
-    private GameObject[] mMapSpawnPoints;
+    private GameObject[] mBaseSpawnpoints;
+    private GameObject[] mUnitSpawnpoints;
+    private SpawnpointTaken[] mUnitSpawnpointsTaken;
+    private int mTotalUnitsSpawned;
 
     private void Awake()
     {
@@ -42,24 +45,53 @@ public class LoadingManager : MonoBehaviour
         CreatePlayerStartingUnits();
         Actions.CameraLoadedPosition.Invoke(mMainCamera.transform.position);
     }
+    private void InitializeVariables()
+    {
+        mBaseSpawnpoints = mMaps[0].GetComponent<MapController>().GetBaseSpawnpoints;
+        mUnitSpawnpoints = mMaps[0].GetComponent<MapController>().GetUnitSpawnpoints;
+        mUnitSpawnpointsTaken = new SpawnpointTaken[mUnitSpawnpoints.Length];
+
+        for (int i = 0; i < mUnitSpawnpoints.Length; i++)
+        {
+            mUnitSpawnpointsTaken[i] = mUnitSpawnpoints[i].GetComponent<SpawnpointTaken>();
+            mUnitSpawnpointsTaken[i].SetIsTaken(false);
+        }
+
+        mTotalUnitsSpawned = 0;
+
+        mFighterUnitPool.SetTotalPrefabsNeeded(mMaps[0].GetComponent<MapController>().GetTotalUnits);
+    }
 
     private void CreatePlayerStartLocation()
     {
-        var randomSpawnLocation = Random.Range(0, mMapSpawnPoints.Length);
+        var randomSpawnLocation = Random.Range(0, mBaseSpawnpoints.Length);
         Debug.Log(randomSpawnLocation);
-        var newSpawnLocation = new Vector3(mMapSpawnPoints[randomSpawnLocation].transform.position.x, mMapSpawnPoints[randomSpawnLocation].transform.position.y, mMapSpawnPoints[randomSpawnLocation].transform.position.z);
-        mMainCamera.transform.position = new Vector3(mMapSpawnPoints[randomSpawnLocation].transform.position.x, mMainCamera.transform.position.y, mMapSpawnPoints[randomSpawnLocation].transform.position.z);
+        var newSpawnLocation = new Vector3(mBaseSpawnpoints[randomSpawnLocation].transform.position.x, mBaseSpawnpoints[randomSpawnLocation].transform.position.y, mBaseSpawnpoints[randomSpawnLocation].transform.position.z);
+        mMainCamera.transform.position = new Vector3(mBaseSpawnpoints[randomSpawnLocation].transform.position.x, mMainCamera.transform.position.y, mBaseSpawnpoints[randomSpawnLocation].transform.position.z);
         mMainCamera.fieldOfView = 60;
-        Instantiate(mPlayerStartBase, newSpawnLocation, mMapSpawnPoints[randomSpawnLocation].transform.rotation);
+        Instantiate(mPlayerStartBase, newSpawnLocation, mBaseSpawnpoints[randomSpawnLocation].transform.rotation);
     }
 
     private void CreatePlayerStartingUnits()
     {
-        
-    }
+        for (int i = 0; i < mUnitSpawnpoints.Length; i++)
+        {
+            if(!mUnitSpawnpointsTaken[i].GetIsTaken && mTotalUnitsSpawned < mUnitSpawnpoints.Length)
+            {
+                var newUnit = mFighterUnitPool.GetAvailablePrefabs();
 
-    private void InitializeVariables()
-    {
-        mMapSpawnPoints = mMaps[0].GetComponent<MapController>().GetSpawnPoints;
+                if (newUnit != null)
+                {
+                    newUnit.transform.SetPositionAndRotation(mUnitSpawnpoints[i].transform.position, mUnitSpawnpoints[i].transform.rotation);
+                    mUnitSpawnpointsTaken[i].SetIsTaken(true);
+                    mTotalUnitsSpawned++;
+                }
+
+                for (int j = 0; j < mFighterUnitPool.GetPrefabList.Count; j++)
+                {
+                    newUnit.SetActive(true);
+                }
+            }
+        }
     }
 }
