@@ -348,7 +348,7 @@ Transform:
   m_GameObject: {fileID: 559136456}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.5893113, z: -0, w: 0.80790615}
-  m_LocalPosition: {x: 41.63, y: 1.2, z: 35.33}
+  m_LocalPosition: {x: 94.4, y: 1.2, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3515f6095475645abc1ccf8da5f245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thePrefab: {fileID: 7821974196641095772, guid: c6a85abfab20739499144fe10a009474, type: 3}
+  thePrefab: {fileID: 7821974196641095772, guid: 7607f6558871e9f4292beee076be75f1, type: 3}
 --- !u!114 &720048868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,7 +591,7 @@ Transform:
   m_GameObject: {fileID: 1035096938}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.14864528, z: -0, w: 0.98889065}
-  m_LocalPosition: {x: 34.4, y: 1.2, z: 42.22}
+  m_LocalPosition: {x: 76.3, y: 1.2, z: 49.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -635,7 +635,7 @@ Transform:
   m_GameObject: {fileID: 1056982829}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.35345852, z: -0, w: 0.9354502}
-  m_LocalPosition: {x: 39.53, y: 1.2, z: 40.13}
+  m_LocalPosition: {x: 84.5, y: 1.2, z: 54.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -708,8 +708,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1186028603}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.32953304, z: -0, w: 0.9441441}
-  m_LocalPosition: {x: 35, y: 1, z: 35}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 84.52, y: 0.11, z: 40.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -835,7 +835,7 @@ Transform:
   m_GameObject: {fileID: 1247348603}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -125, y: 0, z: -125}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -870,7 +870,7 @@ Transform:
   m_GameObject: {fileID: 1316183105}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.27507842, z: -0, w: 0.96142185}
-  m_LocalPosition: {x: 37.8, y: 1.2, z: 41.18}
+  m_LocalPosition: {x: 80.3, y: 1.2, z: 53.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1065,7 +1065,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 64cb2e7c117b22347855702bd564a779, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 6b809fb9e17aed24da038bbd20ae01e7, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1534449727
 GameObject:
@@ -1435,7 +1435,7 @@ Transform:
   m_GameObject: {fileID: 2042270957}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.487987, z: -0, w: -0.8728509}
-  m_LocalPosition: {x: 41.47, y: 1.2, z: 37.8}
+  m_LocalPosition: {x: 89.7, y: 1.2, z: 55.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1509,9 +1509,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2081653522}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.32953304, z: -0, w: 0.9441441}
-  m_LocalPosition: {x: 35, y: 1, z: 35}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.24775976, z: -0, w: 0.9688215}
+  m_LocalPosition: {x: -38.56816, y: 0.67162704, z: 74.46455}
+  m_LocalScale: {x: 0.008939399, y: 0.008939399, z: 0.008939399}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 223219595}
@@ -1562,8 +1562,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mMaps:
   - {fileID: 1247348603}
-  mPlayerStartBase: {fileID: 8614452787303704328, guid: cec38ad690693f44fbcf10d158943fd8, type: 3}
-  mAIStartBase: {fileID: 8614452787303704328, guid: c6485a05889a7b140917cf3d28e542a5, type: 3}
+  mPlayerStartBase: {fileID: 6242375866979685302, guid: e73174de80b38194486bd7b2f03dcc4c, type: 3}
+  mAIStartBase: {fileID: 3658866952857814138, guid: 78707865a273648459f03165d0f3f387, type: 3}
   mMainCamera: {fileID: 1739467750}
   mFighterUnitPool: {fileID: 720048867}
   mAIFighterUnitPool: {fileID: 720048868}
