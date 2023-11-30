@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitController : MonoBehaviour, ISelectable, IHighlightable
+public class UnitController : MonoBehaviour, IHighlightable
 {
     // ENUMS FOR STATE MACHINE
     protected enum State
@@ -19,14 +19,19 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
     [SerializeField] protected Rigidbody mRigidBody = null;
     [SerializeField] protected Renderer mRenderer = null;
 
-    // LOCAL VARIABLES
+    // MEMBERS VARIABLES
     protected bool mSelected;
-    protected State mCurrentState;
+    protected bool mPlayerControled;
+    protected Animator mAnimator;
     protected NavMeshAgent mNavAgent;
+    protected State mCurrentState;
     protected LayerMask mMask;
+    protected Vector3 mCurrentPosition;
+    protected Quaternion mCurrentRotation;
 
     // GETTERS
     public bool GetSelected => mSelected;
+    public Vector3 GetCurrentPosition => mCurrentPosition;
 
     // SETTERS
     public void SetSelected(bool yesno) => mSelected = yesno;
@@ -37,9 +42,14 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
         Actions.UnitMove += MoveUnit;
     }
 
-    public void Selected()
+    protected void Update()
     {
-        mSelected = !mSelected;
+        if (InputManager.Load.IsSelecting)
+        {
+            var myLocationOnCamera = Camera.main.WorldToScreenPoint(transform.position);
+            myLocationOnCamera.y = Screen.height - myLocationOnCamera.y;
+            mSelected = InputManager.Load.GetUnitSelectionBox.Contains(myLocationOnCamera);
+        }
     }
 
     protected void DeSelectUnit()
@@ -57,6 +67,7 @@ public class UnitController : MonoBehaviour, ISelectable, IHighlightable
             mNavAgent.SetDestination(location.point);
             mNavAgent.isStopped = false;
             mCurrentState = State.Moving;
+            mPlayerControled = true;
         }
     }
 
