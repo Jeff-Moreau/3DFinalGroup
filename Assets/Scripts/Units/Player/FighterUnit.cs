@@ -34,7 +34,6 @@ public class FighterUnit : UnitController, ISelectable
         mCurrentPosition = transform.position;
         mCurrentRotation = transform.rotation;
         mEnemyList = mEnemyContainer.GetComponentsInChildren<AIFighterUnit>();
-        Debug.Log(mEnemyList.Length);
         mEnemyTarget = null;
         mReloadTime = 1.5f;
         mCountTime = 0;
@@ -57,7 +56,9 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsShooting", false);
                 mPlayerControled = false;
                 mEnemyTarget = null;
-                Debug.Log("I am Idle. Please do something with me."); // this is just for testing purposes
+                DetectAIEnemy();
+
+                //Debug.Log("I am Idle. Please do something with me."); // this is just for testing purposes
                 break;
 
             case State.Moving:
@@ -67,6 +68,7 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
                 mAnimator.SetBool("IsWalking", true);
+                DetectAIEnemy();
 
                 if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 1)
                 {
@@ -76,14 +78,15 @@ public class FighterUnit : UnitController, ISelectable
                     mCurrentState = State.Idle;
                 }
 
-                Debug.Log("I am Runnin."); // this is just for testing purposes
+                //Debug.Log("I am Runnin."); // this is just for testing purposes
                 break;
 
             case State.Working:
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
-                Debug.Log("Work work work all day long."); // this is just for testing purposes
+                DetectAIEnemy();
+                //Debug.Log("Work work work all day long."); // this is just for testing purposes
                 break;
 
             case State.Chasing:
@@ -102,7 +105,7 @@ public class FighterUnit : UnitController, ISelectable
                     mCurrentState = State.Attacking;
                 }
 
-                Debug.Log("I'm gonna get him."); // this is just for testing purposes
+                //Debug.Log("I'm gonna get him."); // this is just for testing purposes
                 break;
 
             case State.Fleeing:
@@ -112,7 +115,7 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsWalking", true);
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
-                Debug.Log("He's scary im leaving."); // this is just for testing purposes
+                //Debug.Log("He's scary im leaving."); // this is just for testing purposes
                 break;
 
             case State.Attacking:
@@ -122,28 +125,38 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
 
-                var testPosition = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+                transform.LookAt(mEnemyTarget.transform.position);
+
+                var testPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
 
                 if (Physics.Raycast(testPosition, transform.forward, out RaycastHit target, Mathf.Infinity))
                 {
-                    Debug.Log("Im hitting an enemy " + target.collider.gameObject);
-                    Debug.Log("Should be " + mEnemyTarget);
-                    if (target.collider.gameObject == mEnemyTarget.gameObject)
+                    if (target.collider.gameObject == mEnemyTarget.gameObject && mEnemyTarget.IsAlive)
                     {
                         if (mCountTime > mReloadTime)
                         {
+/*                            if (mEnemyTarget.GetHealth <= 0)
+                            {
+                                mCurrentState = State.Idle;
+                            }*/
                             if (!mGunSource.isPlaying)
                             {
+                                // do damge here.
+                                mEnemyTarget.SetCurrentHealth(mEnemyTarget.GetHealth - mData.GetBaseDamage);
                                 mGunSource.Play();
                             }
-                            Debug.Log("PewPew");
                             mCountTime = 0;
                         }
                     }
+                    else
+                    {
+                        mCurrentState = State.Idle;
+                    }
                 }
+
                 Debug.DrawRay(testPosition, transform.forward * 100, Color.magenta);
                  
-                Debug.Log("Kill kill kill"); // this is just for testing purposes
+                //Debug.Log("Kill kill kill"); // this is just for testing purposes
                 break;
 
             case State.Dead:
@@ -152,7 +165,7 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
-                Debug.Log("Ohh well maybe next time"); // this is just for testing purposes
+                //Debug.Log("Ohh well maybe next time"); // this is just for testing purposes
                 break;
         }
 
@@ -169,7 +182,6 @@ public class FighterUnit : UnitController, ISelectable
             mRenderer.material.color = Color.white; // this is just for testing purposes
         }
 
-        DetectAIEnemy();
         MouseHover();
         base.Update();
     }
@@ -207,15 +219,16 @@ public class FighterUnit : UnitController, ISelectable
 
     private void DetectAIEnemy()
     {
-        foreach (AIFighterUnit enemyPosition in mEnemyList)
+        
+        for (int i =0; i < mEnemyList.Length; i++)
         {
-            var distanceBetween = Vector3.Distance(enemyPosition.transform.position, transform.position);
+            var distanceBetween = Vector3.Distance(mEnemyList[i].transform.position, transform.position);
 
-            if(distanceBetween > mData.GetAttackDistance && distanceBetween < mData.GetViewDistance)
+            if (mEnemyList[i].IsAlive && distanceBetween <= mData.GetViewDistance)
             {
-                if (!mPlayerControled && mEnemyTarget == null)
+                if (!mPlayerControled)
                 {
-                    mEnemyTarget = enemyPosition;
+                    mEnemyTarget = mEnemyList[i];
                     mNavAgent.SetDestination(mEnemyTarget.transform.position);
                     mNavAgent.speed = mData.GetMovementSpeed;
                     mNavAgent.isStopped = false;

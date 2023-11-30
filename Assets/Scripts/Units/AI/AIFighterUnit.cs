@@ -6,6 +6,12 @@ public class AIFighterUnit : UnitController, ISelectable
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
 
+    private float mCurrentHealth;
+    private bool mIsAlive;
+    public float GetHealth => mCurrentHealth;
+    public bool IsAlive => mIsAlive;
+    public void SetCurrentHealth(float damage) => mCurrentHealth = damage;
+
     private void Awake()
     {
         mNavAgent = GetComponent<NavMeshAgent>();
@@ -24,10 +30,17 @@ public class AIFighterUnit : UnitController, ISelectable
         mCurrentState = State.Idle;
         mCurrentPosition = transform.position;
         mCurrentRotation = transform.rotation;
+        mCurrentHealth = mData.GetMaxHealth;
+        mIsAlive = true;
     }
 
     new private void Update()
     {
+        if (mCurrentHealth <= 0)
+        {
+            mIsAlive = false;
+            gameObject.SetActive(false);
+        }
         switch (mCurrentState)
         {
             case State.Idle:
