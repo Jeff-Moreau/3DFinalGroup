@@ -178,17 +178,6 @@ public class InputManager : MonoBehaviour
         {
             Camera.main.fieldOfView -= mCameraData.GetZoomSpeed;
         }
-            // mouse scroll wheel to zoom in and out
-        /*if (Input.mouseScrollDelta.y < 0 && mMainCamera.transform.position.y < mCameraData.GetMaxZoomDistance)
-        {
-            Debug.Log("Scroll Plus");
-            mCameraPosition.y += mCameraData.GetZoomSpeed;
-        }
-        else if (Input.mouseScrollDelta.y > 0 && mMainCamera.transform.position.y > mCameraData.GetMinZoomDistance)
-        {
-            Debug.Log("Scroll Minus");
-            mCameraPosition.y -= mCameraData.GetZoomSpeed;
-        }*/
     }
 
     private void MoveCameraMouseEdge()
