@@ -21,14 +21,17 @@ public class UnitController : MonoBehaviour, IHighlightable
 
     // MEMBERS VARIABLES
     protected bool mSelected;
-    protected State mCurrentState;
+    protected bool mPlayerControled;
+    protected Animator mAnimator;
     protected NavMeshAgent mNavAgent;
+    protected State mCurrentState;
     protected LayerMask mMask;
     protected Vector3 mCurrentPosition;
     protected Quaternion mCurrentRotation;
 
     // GETTERS
     public bool GetSelected => mSelected;
+    public Vector3 GetCurrentPosition => mCurrentPosition;
 
     // SETTERS
     public void SetSelected(bool yesno) => mSelected = yesno;
@@ -64,6 +67,7 @@ public class UnitController : MonoBehaviour, IHighlightable
             mNavAgent.SetDestination(location.point);
             mNavAgent.isStopped = false;
             mCurrentState = State.Moving;
+            mPlayerControled = true;
         }
     }
 
