@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class InputManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private LayerMask mGround = new LayerMask();
     [SerializeField] private LayerMask mUnit = new LayerMask();
     [SerializeField] private Texture2D mSelectionBoxColor = null;
+    [SerializeField] private GameObject mMarker = null;
 
     [Header("Camera Stuff")]
     [SerializeField] private Camera mMainCamera = null;
@@ -149,9 +151,22 @@ public class InputManager : MonoBehaviour
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(location, out RaycastHit hit))
+            if (Physics.Raycast(location, out RaycastHit hit, 1000))
             {
                 Actions.UnitMove.Invoke(hit);
+            }
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            var location = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(location, out RaycastHit hit, 1000))
+            {
+                if (!mMarker.activeInHierarchy)
+                {
+                    mMarker.transform.position = hit.point;
+                    mMarker.SetActive(true);
+                }
             }
         }
     }
