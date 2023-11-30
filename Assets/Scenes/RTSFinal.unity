@@ -279,10 +279,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224fb00a9e0cc60428deabc7fddd5183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpawnPointContainer: {fileID: 664830284}
-  mSpawnPoints:
-  - {fileID: 41328234}
-  - {fileID: 2109889707}
+  mBaseSpawnpointContainer: {fileID: 0}
+  mBaseSpawnpoints: []
+  mUnitSpawnpointContainer: {fileID: 0}
+  mUnitSpawnpoints: []
+  mAIBaseSpawnpointContainer: {fileID: 0}
+  mAIBaseSpawnpoints: []
+  mAIUnitSpawnpointContainer: {fileID: 0}
+  mAIUnitSpawnpoints: []
+  mTotalUnits: 0
 --- !u!154 &369887814
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -619,6 +624,8 @@ MonoBehaviour:
   mPlayerStartBase: {fileID: 8614452787303704328, guid: cec38ad690693f44fbcf10d158943fd8, type: 3}
   mAIStartBase: {fileID: 8614452787303704328, guid: cec38ad690693f44fbcf10d158943fd8, type: 3}
   mMainCamera: {fileID: 1044437065}
+  mFighterUnitPool: {fileID: 0}
+  mAIFighterUnitPool: {fileID: 0}
 --- !u!1 &1367925206
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,63 +689,6 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: f61c5b275755128478a1ea93205d50b1, type: 2}
   m_BuildHeightMesh: 0
---- !u!1001 &1875435477
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477924516037933798, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7821974196641095772, guid: c6a85abfab20739499144fe10a009474, type: 3}
-      propertyPath: m_Name
-      value: Soldier_Mesh_001@T-Pose
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c6a85abfab20739499144fe10a009474, type: 3}
 --- !u!1 &2109889707
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,4 +728,3 @@ SceneRoots:
   - {fileID: 1044437067}
   - {fileID: 369887816}
   - {fileID: 393185632}
-  - {fileID: 1875435477}
