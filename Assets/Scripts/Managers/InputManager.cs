@@ -1,6 +1,4 @@
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class InputManager : MonoBehaviour
 {
@@ -97,7 +95,6 @@ public class InputManager : MonoBehaviour
         else if (isSelectingUnits && Input.GetMouseButtonUp(2))
         {
             mBoxStartCorner = Vector3.one;
-            mUnitSelectionBox = new Rect(0, 0, 0, 0);
         }
 
         CreateBoxSelector();

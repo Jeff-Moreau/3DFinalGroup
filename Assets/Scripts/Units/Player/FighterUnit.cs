@@ -5,10 +5,13 @@ public class FighterUnit : UnitController, ISelectable
 {
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
+    [SerializeField] private AudioSource mGunSource;
 
     private GameObject mEnemyContainer;
     private AIFighterUnit[] mEnemyList;
     private AIFighterUnit mEnemyTarget;
+    private float mReloadTime;
+    private float mCountTime;
 
     private void Awake()
     {
@@ -33,10 +36,14 @@ public class FighterUnit : UnitController, ISelectable
         mEnemyList = mEnemyContainer.GetComponentsInChildren<AIFighterUnit>();
         Debug.Log(mEnemyList.Length);
         mEnemyTarget = null;
+        mReloadTime = 1.5f;
+        mCountTime = 0;
     }
 
     new private void Update()
     {
+        mCountTime += Time.deltaTime;
+
         switch (mCurrentState)
         {
             case State.Idle:
@@ -114,6 +121,28 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsShooting", true);
                 mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
+
+                var testPosition = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+
+                if (Physics.Raycast(testPosition, transform.forward, out RaycastHit target, Mathf.Infinity))
+                {
+                    Debug.Log("Im hitting an enemy " + target.collider.gameObject);
+                    Debug.Log("Should be " + mEnemyTarget);
+                    if (target.collider.gameObject == mEnemyTarget.gameObject)
+                    {
+                        if (mCountTime > mReloadTime)
+                        {
+                            if (!mGunSource.isPlaying)
+                            {
+                                mGunSource.Play();
+                            }
+                            Debug.Log("PewPew");
+                            mCountTime = 0;
+                        }
+                    }
+                }
+                Debug.DrawRay(testPosition, transform.forward * 100, Color.magenta);
+                 
                 Debug.Log("Kill kill kill"); // this is just for testing purposes
                 break;
 
