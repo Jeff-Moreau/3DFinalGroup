@@ -5,8 +5,8 @@ public class CameraData : ScriptableObject
 {
     // INSPECTOR VARIABLES
     [Header("Camera Data for Zoom")]
-    [SerializeField, Range(15, 80)] private float mMaxZoomDistance;
-    [SerializeField, Range(15, 30)] private float mMinZoomDistance;
+    [SerializeField, Range(10, 50)] private float mMaxZoomDistance;
+    [SerializeField, Range(10, 50)] private float mMinZoomDistance;
     [SerializeField, Range(0.1f, 10)] private float mZoomSpeed;
     [SerializeField] private float mLeftRighEdgeBuffer;
     [SerializeField] private float mTopEdgeBuffer;

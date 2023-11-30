@@ -10,7 +10,6 @@ public class GathererUnit : UnitController, ISelectable
     private void Awake()
     {
         mNavAgent = GetComponent<NavMeshAgent>();
-        mAnimator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -99,18 +98,9 @@ public class GathererUnit : UnitController, ISelectable
         {
             // What happens when unselecting??
             // Sound? Image change? Menu Pop Up?
-            mRenderer.material.color = Color.white; // this is just for testing purposes
+            mRenderer.material.color = Color.blue; // this is just for testing purposes
         }
         base.Update();
-    }
-
-    private void LateUpdate()
-    {
-        Debug.Log("my velocity" + mNavAgent.velocity.magnitude);
-        if (mNavAgent.velocity.magnitude > 0.05f)
-        {
-            mAnimator.SetBool("IsWalking", true);
-        }
     }
 
     public void Selected()
