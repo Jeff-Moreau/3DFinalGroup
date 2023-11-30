@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitController : MonoBehaviour, IHighlightable
+public class UnitController : MonoBehaviour
 {
     // ENUMS FOR STATE MACHINE
     protected enum State
@@ -69,11 +69,6 @@ public class UnitController : MonoBehaviour, IHighlightable
             mCurrentState = State.Moving;
             mPlayerControled = true;
         }
-    }
-
-    public void MouseHover()
-    {
-        mRenderer.material.color = Color.green;
     }
 
     private void OnDisable()

@@ -141,8 +141,22 @@ public class FighterUnit : UnitController, ISelectable
         }
 
         DetectAIEnemy();
-
+        MouseHover();
         base.Update();
+    }
+
+    private void MouseHover()
+    {
+        // mouse hover over unit to light it up
+        var hoverMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(hoverMouse, out RaycastHit target))
+        {
+            if (target.collider.gameObject == this.gameObject)
+            {
+                mRenderer.material.color = Color.green;
+            }
+        }
     }
 
     public void Selected()
@@ -157,7 +171,8 @@ public class FighterUnit : UnitController, ISelectable
         }
         else
         {
-            mSelected = !mSelected;
+            mSelected = true;
+            //mSelected = !mSelected;
         }
     }
 

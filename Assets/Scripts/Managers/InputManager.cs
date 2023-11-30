@@ -75,13 +75,12 @@ public class InputManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        MouseHover();
         BoxSelectUnits();
     }
 
     private void OnGUI()
     {
-        if (mBoxStartCorner != Vector3.zero)
+        if (mBoxStartCorner != -Vector3.one)
         {
             GUI.DrawTexture(mUnitSelectionBox, mSelectionBoxColor);
         }
@@ -89,13 +88,14 @@ public class InputManager : MonoBehaviour
 
     private void BoxSelectUnits()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(2))
         {
             mBoxStartCorner = Input.mousePosition;
         }
-        else if (isSelectingUnits && Input.GetMouseButtonUp(0))
+        else if (isSelectingUnits && Input.GetMouseButtonUp(2))
         {
-            mBoxStartCorner = Vector3.zero;
+            mBoxStartCorner = Vector3.one;
+            mUnitSelectionBox = new Rect(0, 0, 0, 0);
         }
 
         CreateBoxSelector();
@@ -103,7 +103,7 @@ public class InputManager : MonoBehaviour
 
     private void CreateBoxSelector()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(2))
         {
             isSelectingUnits = true;
             mUnitSelectionBox = new Rect(mBoxStartCorner.x, Screen.height - mBoxStartCorner.y, Input.mousePosition.x - mBoxStartCorner.x, (Screen.height - Input.mousePosition.y) - (Screen.height - mBoxStartCorner.y));
@@ -122,7 +122,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private static void SelectDeselectUnit()
+    private void SelectDeselectUnit()
     {
         // left mouse button to select or deselect a unit
         if (Input.GetMouseButtonDown(0))
@@ -142,7 +142,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private static void MoveUnitToLocation()
+    private void MoveUnitToLocation()
     {
         // right mouse button to move selected units to click location
         if (Input.GetMouseButtonDown(1))
@@ -153,18 +153,6 @@ public class InputManager : MonoBehaviour
             {
                 Actions.UnitMove.Invoke(hit);
             }
-        }
-    }
-
-    private static void MouseHover()
-    {
-        // mouse hover over unit to light it up
-        var hoverMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(hoverMouse, out RaycastHit target))
-        {
-            target.collider.gameObject.TryGetComponent(out IHighlightable item);
-            item?.MouseHover();
         }
     }
 
