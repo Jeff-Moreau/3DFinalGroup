@@ -57,17 +57,18 @@ public class FighterUnit : UnitController, ISelectable
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
-                if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 1.5f)
+                mAnimator.SetBool("IsShooting", false);
+                mAnimator.SetBool("IsShootAndWalk", false);
+                mAnimator.SetBool("IsWalking", true);
+
+                if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 1)
                 {
                     mCurrentPosition = transform.position;
                     mCurrentRotation = transform.rotation;
                     mNavAgent.isStopped = true;
                     mCurrentState = State.Idle;
                 }
-                mAnimator.SetBool("IsShooting", false);
-                mAnimator.SetBool("IsShootAndWalk", false);
-                mAnimator.SetBool("IsWalking", true);
-                Debug.Log("my velocity" + mNavAgent.velocity.magnitude);
+
                 Debug.Log("I am Runnin."); // this is just for testing purposes
                 break;
 
@@ -88,8 +89,12 @@ public class FighterUnit : UnitController, ISelectable
 
                 if (Vector3.Distance(mEnemyTarget.transform.position, transform.position) <= mData.GetAttackDistance)
                 {
+                    mCurrentPosition = transform.position;
+                    mCurrentRotation = transform.rotation;
+                    mNavAgent.isStopped = true;
                     mCurrentState = State.Attacking;
                 }
+
                 Debug.Log("I'm gonna get him."); // this is just for testing purposes
                 break;
 
@@ -168,6 +173,7 @@ public class FighterUnit : UnitController, ISelectable
                 {
                     mEnemyTarget = enemyPosition;
                     mNavAgent.SetDestination(mEnemyTarget.transform.position);
+                    mNavAgent.speed = mData.GetMovementSpeed;
                     mNavAgent.isStopped = false;
                     mCurrentState = State.Chasing;
                 }

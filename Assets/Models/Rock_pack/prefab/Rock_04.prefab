@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23240187102395216}
   - component: {fileID: 64017125827572396}
   - component: {fileID: 4822507885674478343}
+  - component: {fileID: 3283745816834239647}
   m_Layer: 0
   m_Name: Rock_04
   m_TagString: Untagged
@@ -130,3 +131,19 @@ CapsuleCollider:
   m_Height: 6.886718
   m_Direction: 0
   m_Center: {x: 1.1099997, y: -0.11, z: 0.51}
+--- !u!208 &3283745816834239647
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383614408900354}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.641, y: 1.401, z: 1.71}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.99000007, y: -0.179, z: 0.333}
+  m_TimeToStationary: 0.5

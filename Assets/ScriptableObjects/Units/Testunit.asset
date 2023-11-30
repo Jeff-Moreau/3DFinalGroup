@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mName: Test
   mMaxHealth: 100
-  mMovementSpeed: 3
-  mViewDistance: 12
-  mAttackDistance: 4
+  mMovementSpeed: 5
+  mViewDistance: 30
+  mAttackDistance: 20
   mBaseDamage: 10
