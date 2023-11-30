@@ -328,3 +328,4 @@ MonoBehaviour:
   mRigidBody: {fileID: 3603780452356498004}
   mRenderer: {fileID: 2302493503058755518}
   mData: {fileID: 11400000, guid: ffb0f6efdcac1a24292f9f683d09534d, type: 2}
+  mAIEnemy: {fileID: -3064453950396294328, guid: 194e366a0060b954a8d21e749de7fecd, type: 3}

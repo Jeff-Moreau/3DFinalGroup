@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d435be915a2d14e9eee7ca07378a89, type: 3}
   m_Name: AITestUnit
   m_EditorClassIdentifier: 
-  mName: 
-  mMaxHealth: 0
-  mMovementSpeed: 0
-  mViewDistance: 0
-  mAttackDistance: 0
-  mBaseDamage: 0
+  mName: AITest
+  mMaxHealth: 100
+  mMovementSpeed: 3
+  mViewDistance: 10
+  mAttackDistance: 6
+  mBaseDamage: 10
