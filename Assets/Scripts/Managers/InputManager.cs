@@ -142,7 +142,6 @@ public class InputManager : MonoBehaviour
 
     private void MoveUnitToLocation()
     {
-        // right mouse button to move selected units to click location
         if (Input.GetMouseButtonDown(1))
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);

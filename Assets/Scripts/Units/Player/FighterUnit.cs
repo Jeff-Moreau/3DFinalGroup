@@ -8,8 +8,10 @@ public class FighterUnit : UnitController, ISelectable
     [SerializeField] private AudioSource mGunSource;
 
     // MEMBER VARIABLES
+    private bool mIsAlive;
     private float mCountTime;
     private float mReloadTime;
+    private float mCurrentHealth;
     private float mCurrentClosestDistance;
     private GameObject mEnemyContainer;
     private AIFighterUnit mEnemyTarget;
@@ -17,6 +19,13 @@ public class FighterUnit : UnitController, ISelectable
     // MEMBER CONTAINERS
     private AIFighterUnit[] mEnemyList;
     private float[] mEnemyDistance;
+
+    // GETTERS
+    public bool IsAlive => mIsAlive;
+    public float GetHealth => mCurrentHealth;
+
+    // SETTERS
+    public void SetCurrentHealth(float damage) => mCurrentHealth = damage;
 
     private void Awake()
     {
@@ -41,14 +50,21 @@ public class FighterUnit : UnitController, ISelectable
         mEnemyList = mEnemyContainer.GetComponentsInChildren<AIFighterUnit>();
         mEnemyDistance = new float[mEnemyList.Length];
         mEnemyTarget = null;
+        mIsAlive = true;
         mReloadTime = 1.5f;
         mCountTime = 0;
+        mCurrentHealth = mData.GetMaxHealth;
         mCurrentClosestDistance = mData.GetViewDistance;
     }
 
     private void Update()
     {
         mCountTime += Time.deltaTime;
+
+        if (mCurrentHealth <= 0)
+        {
+            mCurrentState = State.Dead;
+        }
 
         switch (mCurrentState)
         {
@@ -160,6 +176,7 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
 
+                mIsAlive = false;
                 gameObject.SetActive(false);
                 break;
         }
@@ -227,11 +244,10 @@ public class FighterUnit : UnitController, ISelectable
                 }
             }
 
-            if (mEnemyList[i].IsAlive && distanceBetween <= mData.GetViewDistance /*&& mEnemyTarget == null*/)
+            if (mEnemyList[i].IsAlive && distanceBetween <= mData.GetViewDistance)
             {
                 if (!mPlayerControled)
                 {
-                    //mEnemyTarget = mEnemyList[i];
                     mNavAgent.SetDestination(mEnemyTarget.transform.position);
                     mNavAgent.speed = mData.GetMovementSpeed;
                     mNavAgent.isStopped = false;

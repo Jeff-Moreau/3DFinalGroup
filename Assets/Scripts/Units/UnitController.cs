@@ -43,16 +43,6 @@ public class UnitController : MonoBehaviour
         Actions.UnitMove += MoveUnit;
     }
 
-    /*protected void Update()
-    {
-        if (InputManager.Load.IsSelecting)
-        {
-            var myLocationOnCamera = Camera.main.WorldToScreenPoint(transform.position);
-            myLocationOnCamera.y = Screen.height - myLocationOnCamera.y;
-            mSelected = InputManager.Load.GetUnitSelectionBox.Contains(myLocationOnCamera);
-        }
-    }*/
-
     protected void DeSelectUnit()
     {
         if (mSelected)
@@ -63,7 +53,7 @@ public class UnitController : MonoBehaviour
 
     protected void MoveUnit(RaycastHit location)
     {
-        if (mSelected)
+        if (mSelected && gameObject.layer == 8)
         {
             mNavAgent.SetDestination(location.point);
             mNavAgent.isStopped = false;

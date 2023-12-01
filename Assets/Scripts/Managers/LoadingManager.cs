@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -61,11 +62,11 @@ public class LoadingManager : MonoBehaviour
     }
     private void InitializeVariables()
     {
-        SetupPlayerUnits();
-        SetupAIUnits();
+        SetupPlayerSpawnpoints();
+        SetupAISpawnpoints();
     }
 
-    private void SetupAIUnits()
+    private void SetupAISpawnpoints()
     {
         mAIBaseSpawnpoints = mMaps[0].GetComponent<MapController>().GetAIBaseSpawnpoints;
         mAIUnitSpawnpoints = mMaps[0].GetComponent<MapController>().GetAIUnitSpawnpoints;
@@ -83,7 +84,7 @@ public class LoadingManager : MonoBehaviour
         mAIFighterUnitPool.SetTotalPrefabsNeeded(mMaps[0].GetComponent<MapController>().GetTotalUnits);
     }
 
-    private void SetupPlayerUnits()
+    private void SetupPlayerSpawnpoints()
     {
         mCurrentMap = mMaps[0].GetComponent<MapController>();
         mBaseSpawnpoints = mMaps[0].GetComponent<MapController>().GetBaseSpawnpoints;
@@ -168,6 +169,7 @@ public class LoadingManager : MonoBehaviour
 
                 for (int j = 0; j < mFighterUnitPool.GetPrefabList.Count; j++)
                 {
+                    newUnit.GetComponent<NavMeshAgent>().avoidancePriority = 10 + j;
                     newUnit.SetActive(true);
                 }
             }
