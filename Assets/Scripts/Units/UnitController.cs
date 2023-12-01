@@ -12,21 +12,22 @@ public class UnitController : MonoBehaviour
         Chasing,
         Fleeing,
         Attacking,
+        Patrol,
         Dead
     }
 
     // INSPECTOR VARIABLES
-    [SerializeField] protected Rigidbody mRigidBody = null;
     [SerializeField] protected Renderer mRenderer = null;
+    [SerializeField] protected Rigidbody mRigidBody = null;
 
-    // MEMBERS VARIABLES
+    // MEMBER VARIABLES
     protected bool mSelected;
     protected bool mPlayerControled;
     protected Animator mAnimator;
     protected NavMeshAgent mNavAgent;
     protected State mCurrentState;
-    protected LayerMask mMask;
     protected Vector3 mCurrentPosition;
+    protected LayerMask mMask;
     protected Quaternion mCurrentRotation;
 
     // GETTERS
@@ -42,7 +43,7 @@ public class UnitController : MonoBehaviour
         Actions.UnitMove += MoveUnit;
     }
 
-    protected void Update()
+    /*protected void Update()
     {
         if (InputManager.Load.IsSelecting)
         {
@@ -50,7 +51,7 @@ public class UnitController : MonoBehaviour
             myLocationOnCamera.y = Screen.height - myLocationOnCamera.y;
             mSelected = InputManager.Load.GetUnitSelectionBox.Contains(myLocationOnCamera);
         }
-    }
+    }*/
 
     protected void DeSelectUnit()
     {

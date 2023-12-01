@@ -7,11 +7,16 @@ public class FighterUnit : UnitController, ISelectable
     [SerializeField] private UnitData mData;
     [SerializeField] private AudioSource mGunSource;
 
-    private GameObject mEnemyContainer;
-    private AIFighterUnit[] mEnemyList;
-    private AIFighterUnit mEnemyTarget;
-    private float mReloadTime;
+    // MEMBER VARIABLES
     private float mCountTime;
+    private float mReloadTime;
+    private float mCurrentClosestDistance;
+    private GameObject mEnemyContainer;
+    private AIFighterUnit mEnemyTarget;
+
+    // MEMBER CONTAINERS
+    private AIFighterUnit[] mEnemyList;
+    private float[] mEnemyDistance;
 
     private void Awake()
     {
@@ -34,68 +39,69 @@ public class FighterUnit : UnitController, ISelectable
         mCurrentPosition = transform.position;
         mCurrentRotation = transform.rotation;
         mEnemyList = mEnemyContainer.GetComponentsInChildren<AIFighterUnit>();
+        mEnemyDistance = new float[mEnemyList.Length];
         mEnemyTarget = null;
         mReloadTime = 1.5f;
         mCountTime = 0;
+        mCurrentClosestDistance = mData.GetViewDistance;
     }
 
-    new private void Update()
+    private void Update()
     {
         mCountTime += Time.deltaTime;
 
         switch (mCurrentState)
         {
             case State.Idle:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
-                transform.position = new Vector3(mCurrentPosition.x, transform.position.y, mCurrentPosition.z);
-                transform.rotation = mCurrentRotation;
                 mAnimator.SetBool("IsWalking", false);
-                mAnimator.SetBool("IsShootAndWalk", false);
                 mAnimator.SetBool("IsShooting", false);
-                mPlayerControled = false;
+                mAnimator.SetBool("IsShootAndWalk", false);
+
                 mEnemyTarget = null;
+                mPlayerControled = false;
+                mCurrentClosestDistance = mData.GetViewDistance;
+
                 DetectAIEnemy();
 
-                //Debug.Log("I am Idle. Please do something with me."); // this is just for testing purposes
+                transform.position = new Vector3(mCurrentPosition.x, transform.position.y, mCurrentPosition.z);
+                transform.rotation = mCurrentRotation;
                 break;
 
             case State.Moving:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
+                mAnimator.SetBool("IsWalking", true);
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
-                mAnimator.SetBool("IsWalking", true);
+
+                mEnemyTarget = null;
+
                 DetectAIEnemy();
 
-                if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 1)
+                if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 4f)
                 {
                     mCurrentPosition = transform.position;
                     mCurrentRotation = transform.rotation;
                     mNavAgent.isStopped = true;
                     mCurrentState = State.Idle;
                 }
-
-                //Debug.Log("I am Runnin."); // this is just for testing purposes
                 break;
 
             case State.Working:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
+                mAnimator.SetBool("IsWalking", false);
+                mAnimator.SetBool("IsShooting", false);
+                mAnimator.SetBool("IsShootAndWalk", false);
+
+                mEnemyTarget = null;
+                mPlayerControled = false;
+
                 DetectAIEnemy();
-                //Debug.Log("Work work work all day long."); // this is just for testing purposes
                 break;
 
             case State.Chasing:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
                 mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", true);
+
+                mPlayerControled = false;
 
                 if (Vector3.Distance(mEnemyTarget.transform.position, transform.position) <= mData.GetAttackDistance)
                 {
@@ -105,24 +111,20 @@ public class FighterUnit : UnitController, ISelectable
                     mCurrentState = State.Attacking;
                 }
 
-                //Debug.Log("I'm gonna get him."); // this is just for testing purposes
                 break;
 
             case State.Fleeing:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
                 mAnimator.SetBool("IsWalking", true);
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
-                //Debug.Log("He's scary im leaving."); // this is just for testing purposes
+
+                mEnemyTarget = null;
+                mPlayerControled = false;
                 break;
 
             case State.Attacking:
-                // idle animation?
-                // idle sound effects?
-                mAnimator.SetBool("IsShooting", true);
                 mAnimator.SetBool("IsWalking", false);
+                mAnimator.SetBool("IsShooting", true);
                 mAnimator.SetBool("IsShootAndWalk", false);
 
                 transform.LookAt(mEnemyTarget.transform.position);
@@ -135,10 +137,6 @@ public class FighterUnit : UnitController, ISelectable
                     {
                         if (mCountTime > mReloadTime)
                         {
-/*                            if (mEnemyTarget.GetHealth <= 0)
-                            {
-                                mCurrentState = State.Idle;
-                            }*/
                             if (!mGunSource.isPlaying)
                             {
                                 // do damge here.
@@ -155,45 +153,37 @@ public class FighterUnit : UnitController, ISelectable
                 }
 
                 Debug.DrawRay(testPosition, transform.forward * 100, Color.magenta);
-                 
-                //Debug.Log("Kill kill kill"); // this is just for testing purposes
                 break;
 
             case State.Dead:
-                // idle animation?
-                // idle sound effects?
-                mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsWalking", false);
+                mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
-                //Debug.Log("Ohh well maybe next time"); // this is just for testing purposes
+
+                gameObject.SetActive(false);
                 break;
         }
 
         if (mSelected)
         {
-            // What happens when selected??
-            // Sound? Image change? Menu Pop Up?
-            mRenderer.material.color = Color.green; // this is just for testing purposes
+            mRenderer.material.color = Color.green;
         }
         else
         {
-            // What happens when unselecting??
-            // Sound? Image change? Menu Pop Up?
-            mRenderer.material.color = Color.white; // this is just for testing purposes
+            mRenderer.material.color = Color.white;
         }
 
         MouseHover();
-        base.Update();
+        //base.Update();
     }
 
     private void MouseHover()
     {
-        // mouse hover over unit to light it up
         var hoverMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(hoverMouse, out RaycastHit target))
         {
-            if (target.collider.gameObject == this.gameObject)
+            if (target.collider.gameObject == gameObject)
             {
                 mRenderer.material.color = Color.green;
             }
@@ -205,6 +195,7 @@ public class FighterUnit : UnitController, ISelectable
         if (mSelected && Input.GetKey(KeyCode.LeftShift))
         {
             var otherUnits = FindObjectsOfType<FighterUnit>();
+
             foreach (var otherUnit in otherUnits)
             {
                 otherUnit.mSelected = true;
@@ -212,23 +203,35 @@ public class FighterUnit : UnitController, ISelectable
         }
         else
         {
-            mSelected = true;
-            //mSelected = !mSelected;
+            mSelected = !mSelected;
         }
     }
 
     private void DetectAIEnemy()
     {
-        
-        for (int i =0; i < mEnemyList.Length; i++)
+        for (int i = 0; i < mEnemyList.Length; i++)
         {
             var distanceBetween = Vector3.Distance(mEnemyList[i].transform.position, transform.position);
+            mEnemyDistance[i] = distanceBetween;
 
-            if (mEnemyList[i].IsAlive && distanceBetween <= mData.GetViewDistance)
+            if (mEnemyDistance[i] < mCurrentClosestDistance)
+            {
+                if (mEnemyList[i].gameObject.activeInHierarchy)
+                {
+                    mCurrentClosestDistance = mEnemyDistance[i];
+                    mEnemyTarget = mEnemyList[i];
+                }
+                else
+                {
+                    mCurrentClosestDistance = mData.GetViewDistance;
+                }
+            }
+
+            if (mEnemyList[i].IsAlive && distanceBetween <= mData.GetViewDistance /*&& mEnemyTarget == null*/)
             {
                 if (!mPlayerControled)
                 {
-                    mEnemyTarget = mEnemyList[i];
+                    //mEnemyTarget = mEnemyList[i];
                     mNavAgent.SetDestination(mEnemyTarget.transform.position);
                     mNavAgent.speed = mData.GetMovementSpeed;
                     mNavAgent.isStopped = false;

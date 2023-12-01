@@ -310,7 +310,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7821974196641095772}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.8
+  m_Radius: 0.43
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -338,6 +338,7 @@ MonoBehaviour:
   mRigidBody: {fileID: 3603780452356498004}
   mRenderer: {fileID: 2302493503058755518}
   mData: {fileID: 11400000, guid: a6aaed46010715140b098aa8961356f8, type: 2}
+  mIsBasePatrol: 0
 --- !u!136 &4597565969001217414
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -357,10 +358,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7789852
+  m_Radius: 0.45
   m_Height: 2.706091
   m_Direction: 1
-  m_Center: {x: 0.025861084, y: 1.3217919, z: 0}
+  m_Center: {x: 0, y: 1.3217919, z: 0}
 --- !u!82 &6751968513568573989
 AudioSource:
   m_ObjectHideFlags: 0

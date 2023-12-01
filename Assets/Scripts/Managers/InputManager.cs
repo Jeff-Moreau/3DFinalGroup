@@ -21,10 +21,8 @@ public class InputManager : MonoBehaviour
     // SINGLETON ENDS
 
     // INSPECTOR VARIABLES
-    [SerializeField] private LayerMask mGround = new LayerMask();
-    [SerializeField] private LayerMask mUnit = new LayerMask();
-    [SerializeField] private Texture2D mSelectionBoxColor = null;
     [SerializeField] private GameObject mMarker = null;
+    //[SerializeField] private Texture2D mSelectionBoxColor = null;
 
     [Header("Camera Stuff")]
     [SerializeField] private Camera mMainCamera = null;
@@ -32,13 +30,13 @@ public class InputManager : MonoBehaviour
 
     // MEMBER VARIABLES
     private Vector3 mCameraPosition;
-    private Vector3 mBoxStartCorner;
-    private Rect mUnitSelectionBox;
-    private bool isSelectingUnits;
+    //private bool isSelectingUnits;
+    //private Rect mUnitSelectionBox;
+    //private Vector3 mBoxStartCorner;
 
     // GETTERS
-    public Rect GetUnitSelectionBox => mUnitSelectionBox;
-    public bool IsSelecting => isSelectingUnits;
+    //public bool IsSelecting => isSelectingUnits;
+    //public Rect GetUnitSelectionBox => mUnitSelectionBox;
 
     private void OnEnable()
     {
@@ -58,9 +56,9 @@ public class InputManager : MonoBehaviour
     private void InitializeVariables()
     {
         mCameraPosition = mMainCamera.transform.position;
-        mBoxStartCorner = Vector3.zero;
-        mUnitSelectionBox = new Rect(0,0,0,0);
-        isSelectingUnits = false;
+        //mBoxStartCorner = Vector3.zero;
+        //mUnitSelectionBox = new Rect(0,0,0,0);
+        //isSelectingUnits = false;
     }
 
     private void Update()
@@ -73,7 +71,7 @@ public class InputManager : MonoBehaviour
         mMainCamera.transform.position = mCameraPosition;
     }
 
-    private void LateUpdate()
+/*    private void LateUpdate()
     {
         BoxSelectUnits();
     }
@@ -119,23 +117,24 @@ public class InputManager : MonoBehaviour
                 mUnitSelectionBox.height = -mUnitSelectionBox.height;
             }
         }
-    }
+    }*/
 
     private void SelectDeselectUnit()
     {
-        // left mouse button to select or deselect a unit
         if (Input.GetMouseButtonDown(0))
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(location, out RaycastHit hit))
             {
-                hit.collider.gameObject.TryGetComponent(out ISelectable item);
-                item?.Selected();
-
                 if (hit.collider.gameObject.layer == 3)
                 {
                     Actions.DeSelect.Invoke();
+                }
+                else
+                {
+                    hit.collider.gameObject.TryGetComponent(out ISelectable item);
+                    item?.Selected();
                 }
             }
         }
