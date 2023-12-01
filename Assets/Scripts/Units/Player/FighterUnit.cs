@@ -6,6 +6,11 @@ public class FighterUnit : UnitController, ISelectable
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
     [SerializeField] private AudioSource mGunSource;
+    [SerializeField] private GameObject mMuzzleFlair = null;
+    [SerializeField] private GameObject mGunIdle = null;
+    [SerializeField] private GameObject mGunIdleAim = null;
+    [SerializeField] private GameObject mGunWalking = null;
+    [SerializeField] private GameObject mGunWalkingAim = null;
 
     // MEMBER VARIABLES
     private bool mIsAlive;
@@ -29,6 +34,7 @@ public class FighterUnit : UnitController, ISelectable
 
     private void Awake()
     {
+        mGameOver = GameObject.Find("Managers").GetComponent<GameOverCheck>();
         mNavAgent = GetComponent<NavMeshAgent>();
         mAnimator = GetComponent<Animator>();
         mEnemyContainer = GameObject.Find("ObjectPools");
@@ -72,6 +78,10 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
+                mGunIdle.SetActive(true);
+                mGunIdleAim.SetActive(false);
+                mGunWalking.SetActive(false);
+                mGunWalkingAim.SetActive(false);
 
                 mEnemyTarget = null;
                 mPlayerControled = false;
@@ -87,6 +97,10 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsWalking", true);
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
+                mGunIdle.SetActive(false);
+                mGunIdleAim.SetActive(false);
+                mGunWalking.SetActive(true);
+                mGunWalkingAim.SetActive(false);
 
                 mEnemyTarget = null;
 
@@ -116,6 +130,10 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", true);
+                mGunIdle.SetActive(false);
+                mGunIdleAim.SetActive(false);
+                mGunWalking.SetActive(false);
+                mGunWalkingAim.SetActive(true);
 
                 mPlayerControled = false;
 
@@ -142,6 +160,10 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShooting", true);
                 mAnimator.SetBool("IsShootAndWalk", false);
+                mGunIdle.SetActive(false);
+                mGunIdleAim.SetActive(true);
+                mGunWalking.SetActive(false);
+                mGunWalkingAim.SetActive(false);
 
                 transform.LookAt(mEnemyTarget.transform.position);
 
@@ -158,8 +180,16 @@ public class FighterUnit : UnitController, ISelectable
                                 // do damge here.
                                 mEnemyTarget.SetCurrentHealth(mEnemyTarget.GetHealth - mData.GetBaseDamage);
                                 mGunSource.Play();
+                                InvokeRepeating(nameof(MuzzleFlash), 0, 0.035f);
                             }
+
                             mCountTime = 0;
+                        }
+
+                        if (mCountTime >= 0.7f)
+                        {
+                            CancelInvoke(nameof(MuzzleFlash));
+                            mMuzzleFlair.SetActive(false);
                         }
                     }
                     else
@@ -176,6 +206,7 @@ public class FighterUnit : UnitController, ISelectable
                 mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", false);
 
+                mGameOver.RemovePlayerUnit(1);
                 mIsAlive = false;
                 gameObject.SetActive(false);
                 break;
@@ -254,6 +285,18 @@ public class FighterUnit : UnitController, ISelectable
                     mCurrentState = State.Chasing;
                 }
             }
+        }
+    }
+
+    private void MuzzleFlash()
+    {
+        if  (mMuzzleFlair.activeSelf)
+        {
+            mMuzzleFlair.SetActive(false);
+        }
+        else
+        {
+            mMuzzleFlair.SetActive(true);
         }
     }
 }

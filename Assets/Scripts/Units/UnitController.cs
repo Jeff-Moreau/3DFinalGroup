@@ -30,6 +30,7 @@ public class UnitController : MonoBehaviour
     protected Vector3 mCurrentPosition;
     protected LayerMask mMask;
     protected Quaternion mCurrentRotation;
+    protected GameOverCheck mGameOver = null;
 
     // GETTERS
     public bool GetSelected => mSelected;

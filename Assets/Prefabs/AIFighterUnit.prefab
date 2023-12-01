@@ -300,7 +300,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!195 &6716493906078450858
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -337,6 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mRenderer: {fileID: 2302493503058755518}
   mRigidBody: {fileID: 3603780452356498004}
+  mMoveSound: {fileID: 0}
   mData: {fileID: 11400000, guid: a6aaed46010715140b098aa8961356f8, type: 2}
   mGunSource: {fileID: 6751968513568573989}
 --- !u!136 &4597565969001217414
