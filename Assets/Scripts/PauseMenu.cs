@@ -5,7 +5,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private static bool GameisPaused = false;
     [SerializeField] private GameObject pauseMenuUI;
 
-    // Update is called once per frame
+/*    // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -18,22 +18,31 @@ public class PauseMenu : MonoBehaviour
             Pause();
         }
     }
-
+*/
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameisPaused = false;
     }
-    void Pause()
+    /*public void Pause()
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameisPaused = true;
+    }*/
+
+    public void MainMenu()
+    {
+
     }
 
     public void QuitGame()
     {
-        Application.Quit();
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                        Application.Quit();
+        #endif
     }
 }
