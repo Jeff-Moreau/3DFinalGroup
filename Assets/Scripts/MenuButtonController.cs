@@ -1,21 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MenuButtonController : MonoBehaviour
 {
-   
-    // also was thinking maybe some different text font would be nice.
-
     [SerializeField] private int mIndex;
     [SerializeField] bool mKeyDown;
     [SerializeField] int mMaxIndex;
+    [SerializeField] GameObject mThisScreen;
+    [SerializeField] GameObject mManagers;
+    [SerializeField] GameObject mTerrain;
+    [SerializeField] GameObject mHUD;
+    [SerializeField] GameObject mObjectPools;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if(Input.GetAxis ("Vertical") !=0)
         {
@@ -55,12 +51,19 @@ public class MenuButtonController : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        mThisScreen.SetActive(false);
+        mObjectPools.SetActive(true);
+        mManagers.SetActive(true);
+        mTerrain.SetActive(true);
+        mHUD.SetActive(true);
     }
 
     public void QuitGame()
     {
-        Application.Quit();
-        
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                Application.Quit();
+        #endif
     }
 }

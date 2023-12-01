@@ -28,6 +28,7 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] private FighterUnitPool mFighterUnitPool = null;
     [SerializeField] private AIFighterUnitPool mAIFighterUnitPool = null;
     [SerializeField] private GameObject[] mMaps = null;
+    [SerializeField] private AudioSource mIntroVoice = null;
 
     // MEMBER VARIABLES
     private int mTotalUnitsSpawned;

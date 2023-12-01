@@ -22,6 +22,7 @@ public class InputManager : MonoBehaviour
 
     // INSPECTOR VARIABLES
     [SerializeField] private GameObject mMarker = null;
+    [SerializeField] private GameObject mPauseScreen = null;
     //[SerializeField] private Texture2D mSelectionBoxColor = null;
 
     [Header("Camera Stuff")]
@@ -30,6 +31,7 @@ public class InputManager : MonoBehaviour
 
     // MEMBER VARIABLES
     private Vector3 mCameraPosition;
+    private bool mGameIsPaused;
     //private bool isSelectingUnits;
     //private Rect mUnitSelectionBox;
     //private Vector3 mBoxStartCorner;
@@ -68,6 +70,18 @@ public class InputManager : MonoBehaviour
         MoveUnitToLocation();
         MoveCameraMouseEdge();
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (mGameIsPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
+       
         mMainCamera.transform.position = mCameraPosition;
     }
 
@@ -203,6 +217,19 @@ public class InputManager : MonoBehaviour
     private void LoadIsDone(Vector3 cameraPosition)
     {
         mCameraPosition = cameraPosition;
+    }
+
+    private void Resume()
+    {
+        mPauseScreen.SetActive(false);
+        Time.timeScale = 1f;
+        mGameIsPaused = false;
+    }
+    private void Pause()
+    {
+        mPauseScreen.SetActive(true);
+        Time.timeScale = 0f;
+        mGameIsPaused = true;
     }
 
     private void OnDisable()
