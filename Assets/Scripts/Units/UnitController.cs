@@ -19,6 +19,7 @@ public class UnitController : MonoBehaviour
     // INSPECTOR VARIABLES
     [SerializeField] protected Renderer mRenderer = null;
     [SerializeField] protected Rigidbody mRigidBody = null;
+    [SerializeField] private AudioSource mMoveSound = null;
 
     // MEMBER VARIABLES
     protected bool mSelected;
@@ -59,6 +60,11 @@ public class UnitController : MonoBehaviour
             mNavAgent.isStopped = false;
             mCurrentState = State.Moving;
             mPlayerControled = true;
+
+            if (!mMoveSound.isPlaying)
+            {
+                mMoveSound.Play();
+            }
         }
     }
 
