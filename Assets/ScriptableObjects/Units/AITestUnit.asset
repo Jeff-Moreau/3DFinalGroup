@@ -15,6 +15,6 @@ MonoBehaviour:
   mName: AITest
   mMaxHealth: 100
   mMovementSpeed: 3
-  mViewDistance: 10
-  mAttackDistance: 6
+  mViewDistance: 28
+  mAttackDistance: 18
   mBaseDamage: 10

@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -22,9 +21,8 @@ public class InputManager : MonoBehaviour
     // SINGLETON ENDS
 
     // INSPECTOR VARIABLES
-    [SerializeField] private LayerMask mGround = new LayerMask();
-    [SerializeField] private LayerMask mUnit = new LayerMask();
-    [SerializeField] private Texture2D mSelectionBoxColor = null;
+    [SerializeField] private GameObject mMarker = null;
+    //[SerializeField] private Texture2D mSelectionBoxColor = null;
 
     [Header("Camera Stuff")]
     [SerializeField] private Camera mMainCamera = null;
@@ -32,13 +30,13 @@ public class InputManager : MonoBehaviour
 
     // MEMBER VARIABLES
     private Vector3 mCameraPosition;
-    private Vector3 mBoxStartCorner;
-    private Rect mUnitSelectionBox;
-    private bool isSelectingUnits;
+    //private bool isSelectingUnits;
+    //private Rect mUnitSelectionBox;
+    //private Vector3 mBoxStartCorner;
 
     // GETTERS
-    public Rect GetUnitSelectionBox => mUnitSelectionBox;
-    public bool IsSelecting => isSelectingUnits;
+    //public bool IsSelecting => isSelectingUnits;
+    //public Rect GetUnitSelectionBox => mUnitSelectionBox;
 
     private void OnEnable()
     {
@@ -58,9 +56,9 @@ public class InputManager : MonoBehaviour
     private void InitializeVariables()
     {
         mCameraPosition = mMainCamera.transform.position;
-        mBoxStartCorner = Vector3.zero;
-        mUnitSelectionBox = new Rect(0,0,0,0);
-        isSelectingUnits = false;
+        //mBoxStartCorner = Vector3.zero;
+        //mUnitSelectionBox = new Rect(0,0,0,0);
+        //isSelectingUnits = false;
     }
 
     private void Update()
@@ -73,15 +71,14 @@ public class InputManager : MonoBehaviour
         mMainCamera.transform.position = mCameraPosition;
     }
 
-    private void LateUpdate()
+/*    private void LateUpdate()
     {
-        MouseHover();
         BoxSelectUnits();
     }
 
     private void OnGUI()
     {
-        if (mBoxStartCorner != Vector3.zero)
+        if (mBoxStartCorner != -Vector3.one)
         {
             GUI.DrawTexture(mUnitSelectionBox, mSelectionBoxColor);
         }
@@ -89,13 +86,13 @@ public class InputManager : MonoBehaviour
 
     private void BoxSelectUnits()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(2))
         {
             mBoxStartCorner = Input.mousePosition;
         }
-        else if (isSelectingUnits && Input.GetMouseButtonUp(0))
+        else if (isSelectingUnits && Input.GetMouseButtonUp(2))
         {
-            mBoxStartCorner = Vector3.zero;
+            mBoxStartCorner = Vector3.one;
         }
 
         CreateBoxSelector();
@@ -103,7 +100,7 @@ public class InputManager : MonoBehaviour
 
     private void CreateBoxSelector()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(2))
         {
             isSelectingUnits = true;
             mUnitSelectionBox = new Rect(mBoxStartCorner.x, Screen.height - mBoxStartCorner.y, Input.mousePosition.x - mBoxStartCorner.x, (Screen.height - Input.mousePosition.y) - (Screen.height - mBoxStartCorner.y));
@@ -120,51 +117,52 @@ public class InputManager : MonoBehaviour
                 mUnitSelectionBox.height = -mUnitSelectionBox.height;
             }
         }
-    }
+    }*/
 
-    private static void SelectDeselectUnit()
+    private void SelectDeselectUnit()
     {
-        // left mouse button to select or deselect a unit
         if (Input.GetMouseButtonDown(0))
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(location, out RaycastHit hit))
             {
-                hit.collider.gameObject.TryGetComponent(out ISelectable item);
-                item?.Selected();
-
                 if (hit.collider.gameObject.layer == 3)
                 {
                     Actions.DeSelect.Invoke();
+                }
+                else
+                {
+                    hit.collider.gameObject.TryGetComponent(out ISelectable item);
+                    item?.Selected();
                 }
             }
         }
     }
 
-    private static void MoveUnitToLocation()
+    private void MoveUnitToLocation()
     {
-        // right mouse button to move selected units to click location
         if (Input.GetMouseButtonDown(1))
         {
             var location = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(location, out RaycastHit hit))
+            if (Physics.Raycast(location, out RaycastHit hit, 1000))
             {
                 Actions.UnitMove.Invoke(hit);
             }
         }
-    }
-
-    private static void MouseHover()
-    {
-        // mouse hover over unit to light it up
-        var hoverMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(hoverMouse, out RaycastHit target))
+        if (Input.GetMouseButtonUp(1))
         {
-            target.collider.gameObject.TryGetComponent(out IHighlightable item);
-            item?.MouseHover();
+            var location = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(location, out RaycastHit hit, 1000))
+            {
+                if (!mMarker.activeInHierarchy)
+                {
+                    mMarker.transform.position = hit.point;
+                    mMarker.SetActive(true);
+                }
+            }
         }
     }
 

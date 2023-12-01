@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitController : MonoBehaviour, IHighlightable
+public class UnitController : MonoBehaviour
 {
     // ENUMS FOR STATE MACHINE
     protected enum State
@@ -12,21 +12,22 @@ public class UnitController : MonoBehaviour, IHighlightable
         Chasing,
         Fleeing,
         Attacking,
+        Patrol,
         Dead
     }
 
     // INSPECTOR VARIABLES
-    [SerializeField] protected Rigidbody mRigidBody = null;
     [SerializeField] protected Renderer mRenderer = null;
+    [SerializeField] protected Rigidbody mRigidBody = null;
 
-    // MEMBERS VARIABLES
+    // MEMBER VARIABLES
     protected bool mSelected;
     protected bool mPlayerControled;
     protected Animator mAnimator;
     protected NavMeshAgent mNavAgent;
     protected State mCurrentState;
-    protected LayerMask mMask;
     protected Vector3 mCurrentPosition;
+    protected LayerMask mMask;
     protected Quaternion mCurrentRotation;
 
     // GETTERS
@@ -42,16 +43,6 @@ public class UnitController : MonoBehaviour, IHighlightable
         Actions.UnitMove += MoveUnit;
     }
 
-    protected void Update()
-    {
-        if (InputManager.Load.IsSelecting)
-        {
-            var myLocationOnCamera = Camera.main.WorldToScreenPoint(transform.position);
-            myLocationOnCamera.y = Screen.height - myLocationOnCamera.y;
-            mSelected = InputManager.Load.GetUnitSelectionBox.Contains(myLocationOnCamera);
-        }
-    }
-
     protected void DeSelectUnit()
     {
         if (mSelected)
@@ -62,18 +53,13 @@ public class UnitController : MonoBehaviour, IHighlightable
 
     protected void MoveUnit(RaycastHit location)
     {
-        if (mSelected)
+        if (mSelected && gameObject.layer == 8)
         {
             mNavAgent.SetDestination(location.point);
             mNavAgent.isStopped = false;
             mCurrentState = State.Moving;
             mPlayerControled = true;
         }
-    }
-
-    public void MouseHover()
-    {
-        mRenderer.material.color = Color.green;
     }
 
     private void OnDisable()
