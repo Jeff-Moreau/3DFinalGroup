@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -21,22 +22,29 @@ public class LoadingManager : MonoBehaviour
     // SINGLETON ENDS
 
     // INSPECTOR VARIABLES
-    [SerializeField] private GameObject[] mMaps = null;
+    [SerializeField] private Camera mMainCamera = null;
     [SerializeField] private GameObject mPlayerStartBase = null;
     [SerializeField] private GameObject mAIStartBase = null;
-    [SerializeField] private Camera mMainCamera = null;
     [SerializeField] private FighterUnitPool mFighterUnitPool = null;
     [SerializeField] private AIFighterUnitPool mAIFighterUnitPool = null;
+    [SerializeField] private GameObject[] mMaps = null;
 
-    //MEMBER VARIABLES
+    // MEMBER VARIABLES
+    private int mTotalUnitsSpawned;
+    private int mTotalAIUnitsSpawned;
+    private GameObject mAIBasePatrolSpawn;
+    private MapController mCurrentMap;
+
+    // MEMBER CONTAINERS
     private GameObject[] mBaseSpawnpoints;
     private GameObject[] mUnitSpawnpoints;
-    private SpawnpointTaken[] mUnitSpawnpointsTaken;
-    private int mTotalUnitsSpawned;
     private GameObject[] mAIBaseSpawnpoints;
     private GameObject[] mAIUnitSpawnpoints;
+    private SpawnpointTaken[] mUnitSpawnpointsTaken;
     private SpawnpointTaken[] mAIUnitSpawnpointsTaken;
-    private int mTotalAIUnitsSpawned;
+
+    // GETTERS
+    public MapController GetCurrentMap => mCurrentMap;
 
     private void Awake()
     {
@@ -54,6 +62,31 @@ public class LoadingManager : MonoBehaviour
     }
     private void InitializeVariables()
     {
+        SetupPlayerSpawnpoints();
+        SetupAISpawnpoints();
+    }
+
+    private void SetupAISpawnpoints()
+    {
+        mAIBaseSpawnpoints = mMaps[0].GetComponent<MapController>().GetAIBaseSpawnpoints;
+        mAIUnitSpawnpoints = mMaps[0].GetComponent<MapController>().GetAIUnitSpawnpoints;
+        mAIBasePatrolSpawn = mMaps[0].GetComponent<MapController>().GetAIBasePatrolSpawn;
+        mAIUnitSpawnpointsTaken = new SpawnpointTaken[mAIUnitSpawnpoints.Length];
+
+        for (int i = 0; i < mAIUnitSpawnpoints.Length; i++)
+        {
+            mAIUnitSpawnpointsTaken[i] = mAIUnitSpawnpoints[i].GetComponent<SpawnpointTaken>();
+            mAIUnitSpawnpointsTaken[i].SetIsTaken(false);
+        }
+
+        mTotalAIUnitsSpawned = 0;
+
+        mAIFighterUnitPool.SetTotalPrefabsNeeded(mMaps[0].GetComponent<MapController>().GetTotalUnits);
+    }
+
+    private void SetupPlayerSpawnpoints()
+    {
+        mCurrentMap = mMaps[0].GetComponent<MapController>();
         mBaseSpawnpoints = mMaps[0].GetComponent<MapController>().GetBaseSpawnpoints;
         mUnitSpawnpoints = mMaps[0].GetComponent<MapController>().GetUnitSpawnpoints;
         mUnitSpawnpointsTaken = new SpawnpointTaken[mUnitSpawnpoints.Length];
@@ -67,20 +100,6 @@ public class LoadingManager : MonoBehaviour
         mTotalUnitsSpawned = 0;
 
         mFighterUnitPool.SetTotalPrefabsNeeded(mMaps[0].GetComponent<MapController>().GetTotalUnits);
-
-        mAIBaseSpawnpoints = mMaps[0].GetComponent<MapController>().GetAIBaseSpawnpoints;
-        mAIUnitSpawnpoints = mMaps[0].GetComponent<MapController>().GetAIUnitSpawnpoints;
-        mAIUnitSpawnpointsTaken = new SpawnpointTaken[mAIUnitSpawnpoints.Length];
-
-        for (int i = 0; i < mAIUnitSpawnpoints.Length; i++)
-        {
-            mAIUnitSpawnpointsTaken[i] = mAIUnitSpawnpoints[i].GetComponent<SpawnpointTaken>();
-            mAIUnitSpawnpointsTaken[i].SetIsTaken(false);
-        }
-
-        mTotalAIUnitsSpawned = 0;
-
-        mAIFighterUnitPool.SetTotalPrefabsNeeded(mMaps[0].GetComponent<MapController>().GetTotalUnits);
     }
 
     private void CreateAIStartLocation()
@@ -120,6 +139,17 @@ public class LoadingManager : MonoBehaviour
                 }
             }
         }
+
+        var patrolUnit = mAIFighterUnitPool.GetAvailablePrefabs();
+
+        if (patrolUnit != null)
+        {
+            patrolUnit.transform.SetPositionAndRotation(mAIBasePatrolSpawn.transform.position, mAIBasePatrolSpawn.transform.rotation);
+            mTotalAIUnitsSpawned++;
+            patrolUnit.GetComponent<AIFighterUnit>().SetIsBasePatrol(true);
+            patrolUnit.SetActive(true);
+        }
+
     }
 
     private void CreatePlayerStartingUnits()
@@ -139,6 +169,7 @@ public class LoadingManager : MonoBehaviour
 
                 for (int j = 0; j < mFighterUnitPool.GetPrefabList.Count; j++)
                 {
+                    newUnit.GetComponent<NavMeshAgent>().avoidancePriority = 10 + j;
                     newUnit.SetActive(true);
                 }
             }

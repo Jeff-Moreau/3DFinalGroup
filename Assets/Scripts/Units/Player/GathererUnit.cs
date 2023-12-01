@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 public class GathererUnit : UnitController, ISelectable
 {
@@ -27,7 +26,7 @@ public class GathererUnit : UnitController, ISelectable
         mCurrentRotation = transform.rotation;
     }
 
-    new private void Update()
+    private void Update()
     {
         switch (mCurrentState)
         {
@@ -100,7 +99,7 @@ public class GathererUnit : UnitController, ISelectable
             // Sound? Image change? Menu Pop Up?
             mRenderer.material.color = Color.blue; // this is just for testing purposes
         }
-        base.Update();
+        //base.Update();
     }
 
     public void Selected()

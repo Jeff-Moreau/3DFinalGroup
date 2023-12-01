@@ -5,16 +5,57 @@ public class AIFighterUnit : UnitController, ISelectable
 {
     // INSPECTOR VARIABLES
     [SerializeField] private UnitData mData;
+    [SerializeField] private AudioSource mGunSource;
+
+    // MEMBER VARIABLES
+    private int mCurrentBaseWaypointPosition;
+    private bool mIsAlive;
+    private bool mIsBasePatrol;
+    private float mCountTime;
+    private float mReloadTime;
+    private float mCurrentHealth;
+    private float mCurrentClosestDistance;
+    private float mAIBaseWaypointDistanceCheck;
+    private GameObject mUnitContainer;
+    private FighterUnit mUnitTarget;
+
+    // MEMBER CONTAINERS
+    private float[] mUnitDistance;
+    private FighterUnit[] mUnitList;
+    private GameObject[] mAIBaseWaypointContainer;
+    private Transform[] mAIBaseWaypointsToFollow;
+
+    // GETTERS
+    public bool IsAlive => mIsAlive;
+    public float GetHealth => mCurrentHealth;
+
+    // SETTERS
+    public void SetCurrentHealth(float damage) => mCurrentHealth = damage;
+    public void SetIsBasePatrol(bool yesno) => mIsBasePatrol = yesno;
 
     private void Awake()
     {
         mNavAgent = GetComponent<NavMeshAgent>();
         mAnimator = GetComponent<Animator>();
+        mAIBaseWaypointContainer = LoadingManager.Load.GetCurrentMap.GetAIBaseWaypointContainer;
+        mUnitContainer = GameObject.Find("ObjectPools");
     }
 
     private void Start()
     {
         InitializeVariables();
+        SetupBasePatrolWaypoints();
+    }
+
+    private void SetupBasePatrolWaypoints()
+    {
+        var totalWaypoints = mAIBaseWaypointContainer[0].GetComponentsInChildren<Transform>();
+        mAIBaseWaypointsToFollow = new Transform[totalWaypoints.Length - 1];
+
+        for (int i = 1; i < totalWaypoints.Length; i++)
+        {
+            mAIBaseWaypointsToFollow[i - 1] = totalWaypoints[i];
+        }
     }
 
     private void InitializeVariables()
@@ -24,94 +65,219 @@ public class AIFighterUnit : UnitController, ISelectable
         mCurrentState = State.Idle;
         mCurrentPosition = transform.position;
         mCurrentRotation = transform.rotation;
+        mUnitList = mUnitContainer.GetComponentsInChildren<FighterUnit>();
+        mCurrentHealth = mData.GetMaxHealth;
+        mUnitDistance = new float[mUnitList.Length];
+        mUnitTarget = null;
+        mIsAlive = true;
+        mCurrentBaseWaypointPosition = 0;
+        mAIBaseWaypointDistanceCheck = 2 * 2;
+        mCountTime = 0;
+        mReloadTime = 1.5f;
+        mCurrentHealth = mData.GetMaxHealth;
+        mCurrentClosestDistance = mData.GetViewDistance;
     }
 
-    new private void Update()
+    private void Update()
     {
+        mCountTime += Time.deltaTime;
+
+        if (mCurrentHealth <= 0)
+        {
+            mCurrentState = State.Dead;
+        }
+
         switch (mCurrentState)
         {
             case State.Idle:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
+                mAnimator.SetBool("IsWalking", false);
+                mAnimator.SetBool("IsShooting", false);
+                mAnimator.SetBool("IsShootAndWalk", false);
+
+                if (mIsBasePatrol)
+                {
+                    mCurrentState = State.Patrol;
+                }
+
+                mUnitTarget = null;
+                mCurrentClosestDistance = mData.GetViewDistance;
+
+                DetectPlayerUnits();
+
                 transform.position = new Vector3(mCurrentPosition.x, transform.position.y, mCurrentPosition.z);
                 transform.rotation = mCurrentRotation;
-                mAnimator.SetBool("IsWalking", false);
-                Debug.Log("I am Idle. Please do something with me."); // this is just for testing purposes
                 break;
 
             case State.Moving:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
-                if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 1.5f)
+                mAnimator.SetBool("IsWalking", true);
+                mAnimator.SetBool("IsShooting", false);
+                mAnimator.SetBool("IsShootAndWalk", false);
+
+                mUnitTarget = null;
+
+                DetectPlayerUnits();
+
+                if (mNavAgent.pathStatus == NavMeshPathStatus.PathComplete && mNavAgent.remainingDistance <= 4f)
                 {
                     mCurrentPosition = transform.position;
                     mCurrentRotation = transform.rotation;
                     mNavAgent.isStopped = true;
                     mCurrentState = State.Idle;
                 }
-                mAnimator.SetBool("IsWalking", true);
-                Debug.Log("I am Runnin."); // this is just for testing purposes
                 break;
 
             case State.Working:
                 // idle animation?
                 // idle sound effects?
                 // checking range for bad guys
-                Debug.Log("Work work work all day long."); // this is just for testing purposes
                 break;
 
             case State.Chasing:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
-                mAnimator.SetBool("IsWalking", true);
+                mAnimator.SetBool("IsWalking", false);
+                mAnimator.SetBool("IsShooting", false);
                 mAnimator.SetBool("IsShootAndWalk", true);
-                Debug.Log("I'm gonna get him."); // this is just for testing purposes
+
+                if (Vector3.Distance(mUnitTarget.transform.position, transform.position) <= mData.GetAttackDistance)
+                {
+                    mCurrentPosition = transform.position;
+                    mCurrentRotation = transform.rotation;
+                    mNavAgent.isStopped = true;
+                    mCurrentState = State.Attacking;
+                }
                 break;
 
             case State.Fleeing:
-                // idle animation?
-                // idle sound effects?
-                // checking range for bad guys
                 mAnimator.SetBool("IsWalking", true);
-                Debug.Log("He's scary im leaving."); // this is just for testing purposes
+                mAnimator.SetBool("IsShooting", false);
+                mAnimator.SetBool("IsShootAndWalk", false);
+
+                mUnitTarget = null;
                 break;
 
             case State.Attacking:
-                // idle animation?
-                // idle sound effects?
+                mAnimator.SetBool("IsWalking", false);
                 mAnimator.SetBool("IsShooting", true);
-                Debug.Log("Kill kill kill"); // this is just for testing purposes
+                mAnimator.SetBool("IsShootAndWalk", false);
+
+                transform.LookAt(mUnitTarget.transform.position);
+
+                var testPosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+
+                if (Physics.Raycast(testPosition, transform.forward, out RaycastHit target, Mathf.Infinity))
+                {
+                    if (target.collider.gameObject == mUnitTarget.gameObject && mUnitTarget.IsAlive)
+                    {
+                        if (mCountTime > mReloadTime)
+                        {
+                            if (!mGunSource.isPlaying)
+                            {
+                                // do damge here.
+                                mUnitTarget.SetCurrentHealth(mUnitTarget.GetHealth - mData.GetBaseDamage);
+                                mGunSource.Play();
+                            }
+                            mCountTime = 0;
+                        }
+                    }
+                    else
+                    {
+                        mCurrentState = State.Idle;
+                    }
+                }
+
+                Debug.DrawRay(testPosition, transform.forward * 100, Color.magenta);
+                break;
+
+            case State.Patrol:
+                var waypointPosition = mAIBaseWaypointsToFollow[mCurrentBaseWaypointPosition].position;
+                var nearNextWaypoint = transform.InverseTransformPoint(new Vector3(waypointPosition.x, transform.position.y, waypointPosition.z));
+
+                mNavAgent.SetDestination(waypointPosition);
+                mNavAgent.speed = mData.GetMovementSpeed;
+                mAnimator.SetBool("IsWalking", true);
+
+                if (nearNextWaypoint.sqrMagnitude < mAIBaseWaypointDistanceCheck)
+                {
+                    mCurrentBaseWaypointPosition += 1;
+
+                    if (mCurrentBaseWaypointPosition == mAIBaseWaypointsToFollow.Length)
+                    {
+                        mCurrentBaseWaypointPosition = 0;
+                    }
+                }
                 break;
 
             case State.Dead:
-                // idle animation?
-                // idle sound effects?
-                Debug.Log("Ohh well maybe next time"); // this is just for testing purposes
+                mAnimator.SetBool("IsWalking", false);
+                mAnimator.SetBool("IsShooting", false);
+                mAnimator.SetBool("IsShootAndWalk", false);
+
+                mIsAlive = false;
+                gameObject.SetActive(false);
                 break;
         }
 
         if (mSelected)
         {
-            // What happens when selected??
-            // Sound? Image change? Menu Pop Up?
-            mRenderer.material.color = Color.red; // this is just for testing purposes
+            mRenderer.material.color = Color.red;
         }
         else
         {
-            // What happens when unselecting??
-            // Sound? Image change? Menu Pop Up?
             var normalColor = new Color(1f, 0.61f, 0.61f, 1);
-            mRenderer.material.color = normalColor; // this is just for testing purposes
+            mRenderer.material.color = normalColor;
         }
 
-        base.Update();
+        MouseHover();
+        //base.Update();
+    }
+
+    private void MouseHover()
+    {
+        var hoverMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(hoverMouse, out RaycastHit target))
+        {
+            if (target.collider.gameObject == gameObject)
+            {
+                mRenderer.material.color = Color.red;
+            }
+        }
     }
 
     public void Selected()
     {
         mSelected = !mSelected;
+    }
+
+    private void DetectPlayerUnits()
+    {
+        for (int i = 0; i < mUnitList.Length; i++)
+        {
+            var distanceBetween = Vector3.Distance(mUnitList[i].transform.position, transform.position);
+            mUnitDistance[i] = distanceBetween;
+
+            if (mUnitDistance[i] < mCurrentClosestDistance)
+            {
+                if (mUnitList[i].gameObject.activeInHierarchy)
+                {
+                    mCurrentClosestDistance = mUnitDistance[i];
+                    mUnitTarget = mUnitList[i];
+                }
+                else
+                {
+                    mCurrentClosestDistance = mData.GetViewDistance;
+                }
+            }
+
+            if (mUnitList[i].IsAlive && distanceBetween <= mData.GetViewDistance)
+            {
+                if (!mPlayerControled)
+                {
+                    mNavAgent.SetDestination(mUnitTarget.transform.position);
+                    mNavAgent.speed = mData.GetMovementSpeed;
+                    mNavAgent.isStopped = false;
+                    mCurrentState = State.Chasing;
+                }
+            }
+        }
     }
 }

@@ -15,6 +15,6 @@ MonoBehaviour:
   mName: Test
   mMaxHealth: 100
   mMovementSpeed: 3
-  mViewDistance: 12
-  mAttackDistance: 4
+  mViewDistance: 30
+  mAttackDistance: 20
   mBaseDamage: 10
