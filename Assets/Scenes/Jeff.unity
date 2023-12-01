@@ -20,8 +20,8 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
-  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  m_AmbientSkyColor: {r: 0.91398716, g: 0.74183536, b: 0.4815464, a: 1}
+  m_AmbientEquatorColor: {r: 0.91398716, g: 0.74183536, b: 0.4815464, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.16670325, g: 0.14112717, b: 0.10660862, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1051,6 +1051,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1971914949}
   - component: {fileID: 1971914948}
+  - component: {fileID: 1971914950}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1069,7 +1070,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.8763477, g: 0.67965245, b: 0.33483097, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1128,13 +1129,118 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1971914947}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: -0.07845912, y: 0, z: 0, w: 0.99691737}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1971914950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971914947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 568508f757bafc941be845a5fef4f4a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mSun: {fileID: 1971914948}
+  mTimeOfDay: 4.5
+  mSpeedRotation: 1.5
+  mSkyColour:
+    serializedVersion: 2
+    key0: {r: 0.10590956, g: 0.13118272, b: 0.18867922, a: 1}
+    key1: {r: 0.990566, g: 0.7997049, b: 0.5093005, a: 1}
+    key2: {r: 0.48504806, g: 0.7974545, b: 0.9433962, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
+    key4: {r: 0.48627454, g: 0.7960785, b: 0.9450981, a: 0}
+    key5: {r: 0.9921569, g: 0.8000001, b: 0.50980395, a: 0}
+    key6: {r: 0.111249544, g: 0.11313375, b: 0.18867922, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 5590
+    ctime1: 15613
+    ctime2: 23708
+    ctime3: 32768
+    ctime4: 43562
+    ctime5: 52428
+    ctime6: 59945
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 7
+    m_NumAlphaKeys: 2
+  mEquantorColour:
+    serializedVersion: 2
+    key0: {r: 0.10590956, g: 0.13118272, b: 0.18867922, a: 1}
+    key1: {r: 0.990566, g: 0.7997049, b: 0.5093005, a: 1}
+    key2: {r: 0.48504806, g: 0.7974545, b: 0.9433962, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
+    key4: {r: 0.48627454, g: 0.7960785, b: 0.9450981, a: 0}
+    key5: {r: 0.9921569, g: 0.8000001, b: 0.50980395, a: 0}
+    key6: {r: 0.111249544, g: 0.11313375, b: 0.18867922, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 5590
+    ctime1: 15613
+    ctime2: 23708
+    ctime3: 32768
+    ctime4: 43562
+    ctime5: 52428
+    ctime6: 59945
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 7
+    m_NumAlphaKeys: 2
+  mSunColour:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 0.9622642, g: 0.7462851, b: 0.36765754, a: 1}
+    key2: {r: 1, g: 1, b: 1, a: 0}
+    key3: {r: 0.9607844, g: 0.74509805, b: 0.36862746, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 16191
+    ctime2: 32768
+    ctime3: 48766
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
 --- !u!1 &2042270957
 GameObject:
   m_ObjectHideFlags: 0

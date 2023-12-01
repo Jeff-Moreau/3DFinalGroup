@@ -5,7 +5,7 @@ using UnityEngine;
 public class DaynightCycle : MonoBehaviour
 {
     [SerializeField] private Light mSun;
-    [SerializeField, Range(0, 24)] private float mTimeOfDay;
+    [SerializeField, Range(4.5f, 18.5f)] private float mTimeOfDay;
     [SerializeField] private float mSpeedRotation;
 
     [Header("SkyColour")]
@@ -22,14 +22,14 @@ public class DaynightCycle : MonoBehaviour
 
     private void UpdateSunRotation()
     {
-        float SunRotation = Mathf.Lerp(-90, 270, mTimeOfDay / 24);
+        float SunRotation = Mathf.Lerp(-90, 270, mTimeOfDay / 20);
         mSun.transform.rotation = Quaternion.Euler(SunRotation, mSun.transform.rotation.y, mSun.transform.rotation.z);
 
     }
 
     private void UpdateLight()
     {
-        float timeFraction = mTimeOfDay / 24;
+        float timeFraction = mTimeOfDay / 20;
         RenderSettings.ambientEquatorColor = mEquantorColour.Evaluate(timeFraction);
         RenderSettings.ambientSkyColor = mSkyColour.Evaluate(timeFraction);
         mSun.color = mSunColour.Evaluate(timeFraction);
@@ -38,9 +38,9 @@ public class DaynightCycle : MonoBehaviour
     void Update()
     {
         mTimeOfDay += Time.deltaTime * mSpeedRotation;
-        if(mTimeOfDay > 24)
+        if(mTimeOfDay > 20)
         {
-            mTimeOfDay = 0;
+            mTimeOfDay = 4;
         }
 
         UpdateSunRotation();
