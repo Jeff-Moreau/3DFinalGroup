@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9823b24d3d49264dac861fc47b4ca22, type: 3}
   m_Name: CameraData
   m_EditorClassIdentifier: 
-  mMaxZoomDistance: 80
-  mMinZoomDistance: 15
+  mMaxZoomDistance: 95
+  mMinZoomDistance: 25.1
   mZoomSpeed: 4
+  mMiniMapZoomSpeed: 0.5
+  mMiniMapMaxDistance: 55
+  mMiniMapMinDistance: 15
   mLeftRighEdgeBuffer: 20
   mTopEdgeBuffer: 20
   mBottomEdgeBuffer: 20
-  mEdgeScrollSpeed: 25
+  mEdgeScrollSpeed: 15
