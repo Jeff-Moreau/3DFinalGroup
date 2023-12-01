@@ -52,8 +52,8 @@ public class MenuButtonController : MonoBehaviour
     public void PlayGame()
     {
         mThisScreen.SetActive(false);
-        mManagers.SetActive(true);
         mObjectPools.SetActive(true);
+        mManagers.SetActive(true);
         mTerrain.SetActive(true);
         mHUD.SetActive(true);
     }

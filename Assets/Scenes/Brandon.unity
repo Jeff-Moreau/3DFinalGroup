@@ -246,6 +246,11 @@ MonoBehaviour:
   mIndex: 0
   mKeyDown: 0
   mMaxIndex: 0
+  mThisScreen: {fileID: 0}
+  mManagers: {fileID: 0}
+  mTerrain: {fileID: 0}
+  mHUD: {fileID: 0}
+  mObjectPools: {fileID: 0}
 --- !u!82 &25948632
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1569,6 +1574,11 @@ MonoBehaviour:
   mIndex: 0
   mKeyDown: 0
   mMaxIndex: 0
+  mThisScreen: {fileID: 0}
+  mManagers: {fileID: 0}
+  mTerrain: {fileID: 0}
+  mHUD: {fileID: 0}
+  mObjectPools: {fileID: 0}
 --- !u!1 &598110170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2592,6 +2602,11 @@ MonoBehaviour:
   mIndex: 0
   mKeyDown: 0
   mMaxIndex: 0
+  mThisScreen: {fileID: 0}
+  mManagers: {fileID: 0}
+  mTerrain: {fileID: 0}
+  mHUD: {fileID: 0}
+  mObjectPools: {fileID: 0}
 --- !u!1 &1112405183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2865,6 +2880,11 @@ MonoBehaviour:
   mIndex: 0
   mKeyDown: 0
   mMaxIndex: 0
+  mThisScreen: {fileID: 0}
+  mManagers: {fileID: 0}
+  mTerrain: {fileID: 0}
+  mHUD: {fileID: 0}
+  mObjectPools: {fileID: 0}
 --- !u!114 &1183465231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2966,7 +2986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fbc7b625c5775c44b8d15e2f1a94b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: b711aed91e04974419633d63635fca9f, type: 2}
+  audioMixer: {fileID: 24100000, guid: 2f2086b22ec03b741b985066fec6e463, type: 2}
 --- !u!82 &1183465236
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3964,6 +3984,11 @@ MonoBehaviour:
   mIndex: 0
   mKeyDown: 0
   mMaxIndex: 0
+  mThisScreen: {fileID: 0}
+  mManagers: {fileID: 0}
+  mTerrain: {fileID: 0}
+  mHUD: {fileID: 0}
+  mObjectPools: {fileID: 0}
 --- !u!1 &1565453427
 GameObject:
   m_ObjectHideFlags: 0
@@ -5278,6 +5303,11 @@ MonoBehaviour:
   mIndex: 0
   mKeyDown: 0
   mMaxIndex: 0
+  mThisScreen: {fileID: 0}
+  mManagers: {fileID: 0}
+  mTerrain: {fileID: 0}
+  mHUD: {fileID: 0}
+  mObjectPools: {fileID: 0}
 --- !u!114 &2095485328
 MonoBehaviour:
   m_ObjectHideFlags: 0
