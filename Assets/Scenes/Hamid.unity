@@ -6837,7 +6837,7 @@ Transform:
   m_GameObject: {fileID: 1463759563}
   serializedVersion: 2
   m_LocalRotation: {x: -0.48127025, y: -0.07419274, z: -0.0155743575, w: -0.8732879}
-  m_LocalPosition: {x: 86.2, y: 12.82, z: 46.78}
+  m_LocalPosition: {x: 86.2, y: 12.82, z: 58.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7362,7 +7362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mSun: {fileID: 1968051800}
   mTimeOfDay: 4.5
-  mSpeedRotation: 1.5
+  mSpeedRotation: 0.3
   mSkyColour:
     serializedVersion: 2
     key0: {r: 0.10590956, g: 0.13118272, b: 0.18867922, a: 1}
