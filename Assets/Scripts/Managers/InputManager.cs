@@ -32,6 +32,7 @@ public class InputManager : MonoBehaviour
     // MEMBER VARIABLES
     private Vector3 mCameraPosition;
     private bool mGameIsPaused;
+    private BunkerController mBunker;
     //private bool isSelectingUnits;
     //private Rect mUnitSelectionBox;
     //private Vector3 mBoxStartCorner;
@@ -82,6 +83,11 @@ public class InputManager : MonoBehaviour
             }
         }
        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            mBunker.SetHealth(1000);
+        }
+
         mMainCamera.transform.position = mCameraPosition;
     }
 
