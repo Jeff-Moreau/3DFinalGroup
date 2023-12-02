@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class FighterUnit : UnitController, ISelectable
 {
@@ -11,6 +12,8 @@ public class FighterUnit : UnitController, ISelectable
     [SerializeField] private GameObject mGunIdleAim = null;
     [SerializeField] private GameObject mGunWalking = null;
     [SerializeField] private GameObject mGunWalkingAim = null;
+    [SerializeField] private GameObject mHealthCanvas = null;
+    [SerializeField] private Slider mHealthOnScreen = null;
 
     // MEMBER VARIABLES
     private bool mIsAlive;
@@ -20,6 +23,7 @@ public class FighterUnit : UnitController, ISelectable
     private float mCurrentClosestDistance;
     private GameObject mEnemyContainer;
     private AIFighterUnit mEnemyTarget;
+    private Camera mWorldCamera;
 
     // MEMBER CONTAINERS
     private AIFighterUnit[] mEnemyList;
@@ -61,6 +65,7 @@ public class FighterUnit : UnitController, ISelectable
         mCountTime = 0;
         mCurrentHealth = mData.GetMaxHealth;
         mCurrentClosestDistance = mData.GetViewDistance;
+        mWorldCamera = Camera.main;
     }
 
     private void Update()
@@ -71,6 +76,19 @@ public class FighterUnit : UnitController, ISelectable
         {
             mCurrentState = State.Dead;
         }
+
+        if (mCurrentHealth < mData.GetMaxHealth)
+        {
+            mHealthCanvas.SetActive(true);
+        }
+        else
+        {
+            mHealthCanvas.SetActive(false);
+        }
+
+        mHealthCanvas.transform.forward = mWorldCamera.transform.forward;
+
+        mHealthOnScreen.value = mCurrentHealth / mData.GetMaxHealth;
 
         switch (mCurrentState)
         {

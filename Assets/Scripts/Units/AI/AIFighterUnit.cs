@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class AIFighterUnit : UnitController, ISelectable
 {
@@ -11,6 +12,8 @@ public class AIFighterUnit : UnitController, ISelectable
     [SerializeField] private GameObject mGunIdleAim = null;
     [SerializeField] private GameObject mGunWalking = null;
     [SerializeField] private GameObject mGunWalkingAim = null;
+    [SerializeField] private GameObject mHealthCanvas = null;
+    [SerializeField] private Slider mHealthOnScreen = null;
 
     // MEMBER VARIABLES
     private int mCurrentBaseWaypointPosition;
@@ -23,6 +26,7 @@ public class AIFighterUnit : UnitController, ISelectable
     private float mAIBaseWaypointDistanceCheck;
     private GameObject mUnitContainer;
     private FighterUnit mUnitTarget;
+    private Camera mWorldCamera;
 
     // MEMBER CONTAINERS
     private float[] mUnitDistance;
@@ -45,6 +49,7 @@ public class AIFighterUnit : UnitController, ISelectable
         mAnimator = GetComponent<Animator>();
         mAIBaseWaypointContainer = LoadingManager.Load.GetCurrentMap.GetAIBaseWaypointContainer;
         mUnitContainer = GameObject.Find("ObjectPools");
+        mWorldCamera = Camera.main;
     }
 
     private void Start()
@@ -82,6 +87,7 @@ public class AIFighterUnit : UnitController, ISelectable
         mReloadTime = 1.5f;
         mCurrentHealth = mData.GetMaxHealth;
         mCurrentClosestDistance = mData.GetViewDistance;
+        mHealthOnScreen.value = mCurrentHealth / mData.GetMaxHealth;
     }
 
     private void Update()
@@ -92,6 +98,19 @@ public class AIFighterUnit : UnitController, ISelectable
         {
             mCurrentState = State.Dead;
         }
+
+        if (mCurrentHealth < mData.GetMaxHealth)
+        {
+            mHealthCanvas.SetActive(true);
+        }
+        else
+        {
+            mHealthCanvas.SetActive(false);
+        }
+
+        mHealthCanvas.transform.forward = mWorldCamera.transform.forward;
+
+        mHealthOnScreen.value = mCurrentHealth / mData.GetMaxHealth;
 
         switch (mCurrentState)
         {
